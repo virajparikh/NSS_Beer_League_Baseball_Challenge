@@ -38,6 +38,10 @@
         $('.carousel').carousel();
       });
     </script>
+
+  <!-- BASEBALL SCRIPT
+  ========================================================= -->
+
   </head>
     <body>
 
@@ -145,6 +149,76 @@
 
         <p class="pull-right"><a href="#teamModal" role="button" class="btn btn-large btn-info" data-toggle="modal">Add Team</a> <a href="#resultsModal" role="button" class="btn btn-large btn-warning" data-toggle="modal">Update Results</a></p>
 
+        <!-- ADD TEAM MODAL
+          ================================ -->
+
+          <div id="teamModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Add your team information</h3>
+            </div>
+            <div class="modal-body">
+
+              <form class="form-horizontal">
+                <div class="control-group">
+                  <label class="control-label" for="inputTeamName">Team:</label>
+                  <div class="controls">
+                    <input type="text" id="inputTeamName" placeholder="Team Name">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputEmail">Manager:</label>
+                  <div class="controls">
+                    <input type="text" id="mgrFirstName" placeholder="First Name">
+                    <input type="text" id="mgrLastName" placeholder="Last Name">
+                    <input type="text" id="mgrPhone" placeholder="Phone">
+                    <input type="text" id="mgrZipCode" placeholder="Zip Code">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputSponsor">Sponsor:</label>
+                  <div class="controls">
+                    <input type="text" id="inputSponsor" placeholder="">
+                  </div>
+                </div>
+              <form>
+
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+              <button class="btn btn-success">Add Team</button>
+            </div>
+          </div>
+
+          <!-- UPDATE RESULTS MODAL
+          ================================ -->
+
+          <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Update Team Scores</h3>
+            </div>
+            <div class="modal-body text-center">
+              
+              <select>
+                <option>Cardinals vs Warriors</option>
+                <option>Bears vs Brewers</option>
+                <option>Braves vs Giants</option>
+                <option>Dodgers vs Lions</option>
+              </select>
+
+              <input class="input-mini" type="text" placeholder="Team 1">
+
+              <input class="input-mini" type="text" placeholder="Team 2">
+
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success">Update Scores</button>
+            </div>
+          </div>
+
       </div><!-- /.hero-unit -->
 
       <div class="alert alert-danger">Registration is closed. All spots are filled.</div>
@@ -181,55 +255,7 @@
           </table>
       </div>
 
-          <!-- ADD TEAM MODAL
-          ================================ -->
-
-          <div id="teamModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="myModalLabel">Add your team information</h3>
-            </div>
-            <div class="modal-body text-center">
-
-              <form class="form-horizontal">
-                <label>Team:</label>
-                <input type="text" placeholder="Team Name">
-
-                <label>Manager:</label>
-                <input type="text" placeholder="First Name">
-                <input type="text" placeholder="Last Name">
-                <input type="text" placeholder="Phone">              
-                <input type="text" placeholder="Zip Code">
-
-                <label>Sponsor</label>
-                <input type="text" placeholder="Sponsor">
-              <form>
-
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-              <button class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-
-          <!-- UPDATE RESULTS MODAL
-          ================================ -->
-
-          <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="myModalLabel">Update Team Scores</h3>
-            </div>
-            <div class="modal-body text-center">
-              
-
-
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-              <button class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
+          
         
       <hr>
 
