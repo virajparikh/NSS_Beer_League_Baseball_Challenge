@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NSS Beer League Challenge</title>
+	<meta charset="UTF-8" />
+	<meta description="This website was built by Viraj Parikh and Desmond Cain.  It is a NSS Challenge Project" />
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> 
+
+
+
+  
+</head>
+
+<body>
+   
+ 
+ 
+</body>
+</html>
+
+Layout
+Form
+Standings after each week
+
+
+Phase 1:
+Use Bootstrap
+Create a modal form
+Team Name
+Fname
+Lname
+Phone # - validation
+Sponsor
+Zip Code - validation (use 3)
+
+
+var Team = new Object [TeamName, MgrFirstName, MgrLastName, Phone, Sponsor, Zip]
+
+min - 4  - text with validation “3 teams still available”
+max - 8  - “League is now full”
+
+
+Formatting - Bootstrap
+use Tables
+
+Week 0: 
+everyone starts off 0-0
+
+Week 1:
+Hit Update Results
+Capture scores for each game
+
+
+Issues:
+“Add a Team” button viewable to anyone
+“Update Results” button - should only be viewable by commissioner??
+
+
+Loop through scores each week
+
+Game 1: 
+Team1score
+Team2score
+Team1win
+Team2loss
+
+if Team1score > Team2score, 
+then Team1Win + 1 && Team2Loss + 1, 
+else Team1Loss + 1 && Team2Win + 1
