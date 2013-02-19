@@ -39,11 +39,40 @@
       });
     </script>
 
+
+  <script>
+    
+
+    function Team(teamName, firstName, lastName, phoneNum, zipCode, sponsor, wins, loss) {
+      this.teamName = teamName;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.phoneNum = phoneNum;
+      this.zipCode = zipCode;
+      this.sponsor = sponsor;
+      this.wins = wins;
+      this.loss = loss;
+    };
+
+      var team1 = new Team("Cardinals","Bob","Smith",'917-666-7777','37215','Pepsi');
+      var team2 = new Team("Cubs","Mike","Edwards",'917-666-7777','37234','Coke');
+      var team3 = new Team("Yankees","Howard","Whitney",'917-666-7777','37234','Google');
+      var team4 = new Team("Dodgers","John","Gekko",'917-666-7777','37567','Facebook');
+      var team5 = new Team("Bears","Steve","Gorman",'917-666-7777','37766','Microsoft');
+      var team6 = new Team("Orioles","Scott","Dent",'917-666-7777','37347','Apple');
+      var team7 = new Team("Phillies","Harry","Stack",'917-666-7777','37123','Toyota');
+      var team8 = new Team("Angels","Eddy","Roberts",'917-666-7777','37987','Ford');
+
+  </script>
+   
+
   <!-- BASEBALL SCRIPT
   ========================================================= -->
 
   </head>
     <body>
+
+
 
       <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -77,7 +106,13 @@
       </div>
     </div>
 
+
+
     <div class="container">
+
+      <script>
+        document.write('<p>'+team1.teamName+'</p>')
+      </script> 
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
@@ -96,7 +131,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>Cardinals</td>
+                <td><script>document.write('<p>'+team1.teamName+'</p>')</script> </td>
                 <td>0</td>
                 <td>0</td>
                 <td>.000</td>             
@@ -215,6 +250,7 @@
 
             </div>
             <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
               <button class="btn btn-success">Update Scores</button>
             </div>
           </div>
