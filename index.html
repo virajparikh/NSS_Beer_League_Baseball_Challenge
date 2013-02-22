@@ -15,6 +15,15 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+      .hero-unit thead {
+        background-color: #ccc;
+      }
+      thead {
+        background-color: #eee;
+      }      
+      .row tbody tr:hover {
+        background-color: lightYellow;
+      }
     </style>
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -221,6 +230,37 @@
 
   <!-- BASEBALL SCRIPT
   ========================================================= -->
+=======
+       
+        // BASEBALL SCRIPT ========================================================= -->
+        var league_array = [];
+        $("#submit").click(function(){
+          var team_array = [];
+          $(".team_inputs").each(function(){
+            team_array.push($(this).val());
+          }); // End team_inputs.each()
+
+          league_array.push(team_array);
+          //console.log(league_array);
+          printTeam(team_array);
+          clearForm();
+
+          var league_JSON = JSON.stringify(league_array);
+          //console.log(league_JSON);
+        }); // End  #submit.click()
+
+        function printTeam(team_array){
+          $("#standings").append("<tr><td>" + team_array[0] + "</td></tr>");
+        };
+
+        function clearForm(){
+          $(".team_inputs").each(function(){
+            $(this).val("");
+          }); // End team_inputs.each()
+        }; // End clearForm()
+        
+      }); // End doc.ready()
+    </script>
 
   </head>
 
@@ -236,21 +276,10 @@
           </button>
           <a class="brand" href="#">Beer League Project</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li ><a href="#">Register Team</a></li>             
-            </ul>
 
-            <ul class="nav pull-right">
-              <li><a href="#">Login</a></li> 
-              <li class="dropdown">                
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Edit Account</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Logout</a></li>                  
-                </ul>
-              </li>
+            <ul class="pull-right">
+              <a href="#teamModal" role="button" class="btn btn-danger" data-toggle="modal">Add Team</a>
+              <a href="#resultsModal" role="button" class="btn" data-toggle="modal">Update Results</a>
             </ul>
 
           </div><!--/.nav-collapse -->
@@ -260,20 +289,34 @@
 
     <div class="container">
       <div id="arraylog"></div>
+      <div id="json"></div>
+
+      <script>
+        document.write('<p>'+team1.teamName+'</p>')
+      </script> 
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
+
+        <div class="alert alert-danger">Registration is closed. All spots are filled.</div>
+
+        <div class="alert alert-success">Scores successfully updated!</div>
+
+        <div class="alert alert-info">Beer league will be formed when a minimum of 4 teams have registered.</div>
+
          <div class="text-center">
           <h1>Team Standings</h1>
           <br>
           
           <table class="table table-striped" id="standings">
+           
+          <table id="standings" class="table table-striped">
             <thead>
               <tr>
                 <th>Team</th>
-                <th>W</th>
-                <th>L</th>
-                <th>%</th>
+                <th>Wins</th>
+                <th>Loses</th>
+                <th>Season %</th>
               </tr>
             </thead>
             <tbody>
@@ -327,10 +370,9 @@
               </tr>
             </tbody>
           </table>
-        </div>
 
         <p class="pull-right"><a href="#teamModal" role="button" class="btn btn-info" data-toggle="modal">Add Team</a> <a href="#resultsModal" role="button" class="btn btn-warning" data-toggle="modal">Update Results</a></p>
-
+      </div>
 
         <!-- ADD TEAM MODAL
           ================================ -->
@@ -353,17 +395,20 @@
                 <div class="control-group">
                   <label class="control-label" for="manager">Manager:</label>
                   <div class="controls">
-                    <input type="text" id="firstName" name="firstName" placeholder="First Name">
-                    <input type="text" id="lastName" name="lastName" placeholder="Last Name">
-                    <input type="text" id="phoneNum" name="phoneNum" placeholder="Phone">
-                    <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code">
+
+                    <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="First Name">
+                    <input type="text" id="lastName" class="team_inputs" name="lastName" placeholder="Last Name">
+                    <input type="text" id="phoneNum" class="team_inputs" name="phoneNum" placeholder="Phone">
+                    <input type="text" id="zipCode" class="team_inputs" name="zipCode" placeholder="Zip Code">
                   </div>
                 </div>
 
                 <div class="control-group">
                   <label class="control-label" for="inputSponsor">Sponsor:</label>
                   <div class="controls">
-                    <input type="text" id="sponsor" name="sponsor" placeholder="">
+                    <input type="text" id="sponsor" class="team_inputs" name="sponsor" placeholder="">
+                    <input type="hidden" id="sponsor" class="team_inputs" name="wins" value="0">
+                    <input type="hidden" id="sponsor" class="team_inputs" name="loses" value="0">
                   </div>
                 </div>
               <form>
@@ -371,7 +416,7 @@
             </div>
             <div class="modal-footer">
               <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-              <button id="submit" class="btn btn-success">Add Team</button>
+              <button id="submit" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Add Team</button>
             </div>
           </div>
 
