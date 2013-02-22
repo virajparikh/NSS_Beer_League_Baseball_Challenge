@@ -7,8 +7,22 @@
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> 
 
+	<script>
+		var Team = [teamName, fName, lName, phoneNum, zipCode, sponsor]
 
+		function Team(teamName, firstName, lastName, phoneNum, zipCode, sponsor) {
+			this.teamName = teamName;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.phoneNum = phoneNum;
+			this.zipCode = zipCode;
+			this.sponsor = sponsor;
+		}
 
+		var cardinals = new Team("Cardinals","Bob","Smith",'917-666-7777','37215','Pepsi')
+
+	</script>
+	 
   
 </head>
 
