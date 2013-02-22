@@ -15,6 +15,16 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+      .hero-unit thead {
+        background-color: #ccc;
+        border-bottom: 1px solid #000;
+      }
+      thead {
+        background-color: #eee;
+      }      
+      .row tbody tr:hover {
+        background-color: lightYellow;
+      }
     </style>
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -32,199 +42,54 @@
 
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    
     <script>
       $(document).ready(function() {
-        var formData = $('#addTeamForm').submit(function(){
-          var formData = $(this).serialize();
-          $.get('teamdata.json')
+        
+        $('#pop').popover();
 
-        })
+
+        // BASEBALL SCRIPT ========================================================= -->
+        
+        // $("#textfield").keyup(function () {
+        //   var value = $(this).val();
+        //    $("#submittest").click(function() {
+        //      $("#team1").text(value);
+        //    })        
+        //  }).keyup();
+
+        //  $(function(){
+        //    var teamData = array();
+        //    $("#submittest").click(function() {
+        //      $("#textfield").each(function () {
+        //        teamData[] = $(this).val();
+        //      }); // End .each()
+        //    }); // End .click()
+        //  }); // End function()
+        
+            
+        //  $('#firstname,#lastname,#password').map(function () { 
+        //      return this.value; 
+        //  }).get();
+
+
+        // Grab values from form fields and save them to an array after the form is submitted
         $('form').submit(function() {
-          console.log($(this).serializeArray());
+          $(this).serializeArray();
+            $("#arraylog").append( 
+              $(this)
+            );
           return false;
+          
         }); // End .submit()
+
+        // $('form').submit(function() {
+        //   $("#arraylog").append( $("strong") );       
+        // }); 
       }); // End doc.ready()
-   
-    
-
-    function Team(teamName, firstName, lastName, phoneNum, zipCode, sponsor, wins, loss) {
-      this.teamName = teamName;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.phoneNum = phoneNum;
-      this.zipCode = zipCode;
-      this.sponsor = sponsor;
-      this.wins = wins;
-      this.loss = loss;
-    };
-
-      var team = {
-        team1: {
-          teamName = "Cardinals";
-          firstName = "Bob";
-          lastName = "Smith";
-          phoneNum = '917-666-7777';
-          zipCode = '37215';
-          sponsor = 'Pepsi';
-          wins = 0;
-          loss = 0
-        };
-        team2: {
-          teamName = "Cubs";
-          firstName = "Mike";
-          lastName = "Edwards";
-          phoneNum = '917-645-2377';
-          zipCode = '37234';
-          sponsor = 'Coke';
-          wins = 0;
-          loss = 0
-        };
-        team3: {
-          teamName = "Yankees";
-          firstName = "Howard";
-          lastName = "Whitney";
-          phoneNum = '917-346-7247';
-          zipCode = '37234';
-          sponsor = 'Google';
-          wins = 0;
-          loss = 0
-        };
-        team4: {
-          teamName = "Dodgers";
-          firstName = "John";
-          lastName = "Gekko";
-          phoneNum = '917-636-7127';
-          zipCode = '37567';
-          sponsor = 'Facebook';
-          wins = 0;
-          loss = 0
-        };
-        team5: {
-          teamName = "Bears";
-          firstName = "Steve";
-          lastName = "Gorman";
-          phoneNum = '917-666-3547';
-          zipCode = '37766';
-          sponsor = 'Microsoft';
-          wins = 0;
-          loss = 0
-        };
-        team6: {
-          teamName = "Orioles";
-          firstName = "Scott";
-          lastName = "Dent";
-          phoneNum = '917-666-7567';
-          zipCode = '37347';
-          sponsor = 'Apple';
-          wins = 0;
-          loss = 0
-        };
-        team7: {
-          teamName = "Phillies";
-          firstName = "Harry";
-          lastName = "Stack";
-          phoneNum = '917-236-7777';
-          zipCode = '37123';
-          sponsor = 'Toyota';
-          wins = 0;
-          loss = 0
-        };
-        team8: {
-          teamName = "Angels";
-          firstName = "Eddy";
-          lastName = "Roberts";
-          phoneNum = '917-653-7237';
-          zipCode = '37987';
-          sponsor = 'Ford';
-          wins = 0;
-          loss = 0
-        };
-
-      }
-
-      var team1 = new Team("Cardinals","Bob","Smith",'917-666-7777','37215','Pepsi');
-      var team2 = new Team("Cubs","Mike","Edwards",'917-645-2377','37234','Coke');
-      var team3 = new Team("Yankees","Howard","Whitney",'917-346-7247','37234','Google');
-      var team4 = new Team("Dodgers","John","Gekko",'917-636-7127','37567','Facebook');
-      var team5 = new Team("Bears","Steve","Gorman",'917-666-3547','37766','Microsoft');
-      var team6 = new Team("Orioles","Scott","Dent",'917-666-7567','37347','Apple');
-      var team7 = new Team("Phillies","Harry","Stack",'917-236-7777','37123','Toyota');
-      var team8 = new Team("Angels","Eddy","Roberts",'917-653-7237','37987','Ford');
-
-      var league = newArray [
-                              ["Cardinals","Bob","Smith",'917-666-7777','37215','Pepsi'],
-                              ["Cubs","Mike","Edwards",'917-666-7777','37234','Coke'],
-                              ["Yankees","Howard","Whitney",'917-666-7777','37234','Google'],
-                              ["Dodgers","John","Gekko",'917-666-7777','37567','Facebook'],
-                              ["Bears","Steve","Gorman",'917-666-7777','37766','Microsoft'],
-                              ["Orioles","Scott","Dent",'917-666-7777','37347','Apple'],
-                              ["Phillies","Harry","Stack",'917-666-7777','37123','Toyota'],
-                              ["Angels","Eddy","Roberts",'917-666-7777','37987','Ford']
-                            ];
-
-      var sched4 = [ 
-        [[league[0][0], league[3][0]], [league[1][0], league[2][0]]],
-        [[league[0][0], league[2][0]], [league[1][0], league[3][0]]],
-        [[league[0][0], league[1][0]], [league[2][0], league[3][0]]],
-        ];
-
-        /*var sched4 = [ 
-        [ [1, 4], [2, 3] ],
-        [ [1, 3], [2, 4] ],
-        [ [1, 2], [3, 4] ]
-        ]; */
-
-      var sched6 = [ 
-        [[league[0][0], league[5][0]], [league[1][0], league[4][0]], [league[2][0], league[3][0]]],
-        [[league[0][0], league[4][0]], [league[3][0], league[5][0]], [league[1][0], league[2][0]]],
-        [[league[0][0], league[3][0]], [league[2][0], league[4][0]], [league[1][0], league[5][0]]],
-        [[league[0][0], league[2][0]], [league[1][0], league[3][0]], [league[4][0], league[5][0]]],
-        [[league[0][0], league[1][0]], [league[2][0], league[5][0]], [league[3][0], league[4][0]]]
-        ];
-
-         /*var sched6 = [ 
-        [ [1, 6], [2, 5], [3, 4] ],
-        [ [1, 5], [4, 6], [2, 3] ],
-        [ [1, 4], [3, 5], [2, 6] ],
-        [ [1, 3], [2, 4], [5, 6] ],
-        [ [1, 2], [3, 6], [4, 5] ]
-        ];*/
-
-      var sched8 = [ 
-        [[league[0][0], league[7][0]], [league[1][0], league[6][0]], [league[2][0], league[5][0]], [league[3][0], league[4][0]]],
-        [[league[0][0], league[6][0]], [league[5][0], league[7][0]], [league[1][0], league[4][0]], [league[2][0], league[3][0]]],
-        [[league[0][0], league[5][0]], [league[4][0], league[6][0]], [league[3][0], league[7][0]], [league[1][0], league[2][0]]],
-        [[league[0][0], league[4][0]], [league[3][0], league[5][0]], [league[2][0], league[6][0]], [league[1][0], league[7][0]]],
-        [[league[0][0], league[3][0]], [league[2][0], league[4][0]], [league[1][0], league[5][0]], [league[6][0], league[7][0]]],
-        [[league[0][0], league[2][0]], [league[1][0], league[3][0]], [league[4][0], league[7][0]], [league[5][0], league[6][0]]],
-        [[league[0][0], league[1][0]], [league[2][0], league[7][0]], [league[3][0], league[6][0]], [league[4][0], league[5][0]]]
-        ];  
-
-      /*var sched8 = [
-        [ [1, 8], [2, 7], [3, 6], [4, 5] ],
-        [ [1, 7], [6, 8], [2, 5], [3, 4] ],
-        [ [1, 6], [5, 7], [4, 8], [2, 3] ],
-        [ [1, 5], [4, 6], [3, 7], [2, 8] ],
-        [ [1, 4], [3, 5], [2, 6], [7, 8] ],
-        [ [1, 3], [2, 4], [5, 8], [6, 7] ],
-        [ [1, 2], [3, 8], [4, 7], [5, 6] ]
-        ]; */   
-
-      
-        //function league() {
-        //  for (var i = 0; i < sched4.length; i++) {
-        //   sched[i][0];} 
-
-  </script>
-   
-
-  <!-- BASEBALL SCRIPT
-  ========================================================= -->
+    </script>
 
   </head>
-
-  <body>
+    <body>
 
       <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -267,7 +132,7 @@
           <h1>Team Standings</h1>
           <br>
           
-          <table class="table table-striped" id="standings">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <th>Team</th>
@@ -342,11 +207,11 @@
             </div>
             <div class="modal-body">
 
-              <form id="addTeamForm" class="form-horizontal">
+              <form class="form-horizontal">
                 <div class="control-group">
                   <label class="control-label" for="teamName">Team:</label>
                   <div class="controls">
-                    <input type="text" class="team_inputs" id="teamName" name="teamName" placeholder="Team Name">
+                    <input type="text" id="teamName" name="teamName" placeholder="Team Name">
                   </div>
                 </div>
 
@@ -543,32 +408,6 @@
     <script src="assets/js/bootstrap-typeahead.js"></script>
     <script src="assets/js/bootstrap-transition.js"></script>
     <script src="assets/js/holder/holder.js"></script>
-
-
-    <script>
-      $(document).ready(function(){
-        var league_array=[];
-        $("#createTeam").click(function(){
-          var team_array=[];
-          $(".team_inputs").each(function(){
-            team_array.push($(this).val()
-          }); //closes team array
-        league_array.push(team_array)  
-        console.log(league_array);
-        //$("#Standings").append("<tr><td>" + team_array[0] + "</td></tr>");
-        addTeam(team_array);
-        clearForm();
-        }); //closes click
-          function addTeam(team_array){
-            $("#Standings").append("<tr><td>" + team_array[0] + "</td></tr>");
-          };
-          function clearForm(){
-              $(".team_inputs").each(function(){
-                $(this).val("");
-            };
-           });
-
-    </script>
 
     </body>
   </html>
