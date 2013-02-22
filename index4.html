@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Beer League Project</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="Viraj Parikh" content="">
+    
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+  </head>
+
+  <body>
+      <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Beer League Project</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li ><a href="#">Register Team</a></li>             
+            </ul>
+
+            <ul class="nav pull-right">
+              <li><a href="#">Login</a></li> 
+              <li class="dropdown">                
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Edit Account</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Logout</a></li>                  
+                </ul>
+              </li>
+            </ul>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="container">
+      <div id="arraylog"></div>
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+
+          <div id="alert"></div> 
+
+    <!-- <div class="alert alert-danger">Registration is closed. All spots are filled.</div> -->
+
+          <p class="pull-right"><a href="#teamModal" role="button" class="btn btn-info" id="AddTeamBlueBtn" data-toggle="modal">Add Team</a> <a href="#resultsModal" role="button" class="btn btn-warning" data-toggle="modal">Update Results</a></p>
+          <br>
+         <div class="text-center">
+          <h1>Team Standings</h1>
+          <br>
+          
+          <table class="table table-striped" id="standings">
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>%</th>
+              </tr>
+            </thead>
+            
+          </table>
+        </div> <!-- end table row -->
+
+
+
+        <!-- ADD TEAM MODAL
+          ================================ -->
+
+          <div id="teamModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Add your team information</h3>
+            </div>
+            <div class="modal-body">
+
+            <form id="addTeamForm" class="form-horizontal">
+                <div class="control-group">
+                  <label class="control-label" for="teamName">Team Name:</label>
+                  <div class="controls">
+                    <input type="text" class="team_inputs" id="teamName" name="teamName" placeholder="Team Name">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="manager">Manager:</label>
+                  <div class="controls">
+                    <input type="text" class="team_inputs" id="firstName" name="firstName" placeholder="First Name">
+                    <input type="text" class="team_inputs" id="lastName" name="lastName" placeholder="Last Name">
+                    <input type="text" class="team_inputs" id="phoneNum" name="phoneNum" placeholder="Phone">
+                    <input type="text" class="team_inputs" id="zipCode" name="zipCode" placeholder="Zip Code">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputSponsor">Sponsor:</label>
+                  <div class="controls">
+                    <input type="text" class="team_inputs" id="sponsor" name="sponsor" placeholder="">
+                  </div>
+                </div>
+
+                 <div class="control-group">              
+                  <div class="controls">
+                    <input type="text" class="team_inputs hideField" id="wins" name="wins" placeholder="" value='0'>
+                  </div>
+                </div>
+
+                 <div class="control-group">              
+                  <div class="controls">
+                    <input type="text" class="team_inputs hideField" id="losses" name="losses" placeholder="" value='0'>
+                  </div>
+                </div>
+              
+
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+              <button id="createTeam" type="submit" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Add Team</button>
+            </div>
+            </form>
+          </div>
+
+          <!-- UPDATE RESULTS MODAL
+          ================================ -->
+
+          <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Update Team Scores</h3>
+            </div>
+            <div class="modal-body text-center">
+              
+              <select>
+                <option>Cardinals vs Warriors</option>
+                <option>Bears vs Brewers</option>
+                <option>Braves vs Giants</option>
+                <option>Dodgers vs Lions</option>
+              </select>
+
+              <input class="input-mini" type="text" placeholder="Team 1">
+
+              <input class="input-mini" type="text" placeholder="Team 2">
+
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success">Update Scores</button>
+            </div>
+          </div>
+
+      </div><!-- /.hero-unit -->
+
+        <h2 class="text-center">Schedule/Results</h2>
+        <br>
+
+        <div class="row">
+          <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 1</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cardinals vs Warriors</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Bears vs Brewers</td>
+                  <td>0 - 0</td>            
+                </tr>
+                <tr>
+                  <td>Braves vs Giants</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Dodgers vs Lions</td>
+                  <td>0 - 0</td>            
+                </tr>              
+              </tbody>
+            </table>
+
+            <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 2</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cardinals vs Warriors</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Bears vs Brewers</td>
+                  <td>0 - 0</td>            
+                </tr>
+                <tr>
+                  <td>Braves vs Giants</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Dodgers vs Lions</td>
+                  <td>0 - 0</td>            
+                </tr>              
+              </tbody>
+            </table>
+        </div>
+        <br>
+
+        <div class="row">
+          <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 3</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cardinals vs Warriors</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Bears vs Brewers</td>
+                  <td>0 - 0</td>            
+                </tr>
+                <tr>
+                  <td>Braves vs Giants</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Dodgers vs Lions</td>
+                  <td>0 - 0</td>            
+                </tr>              
+              </tbody>
+            </table>
+
+            <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 4</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cardinals vs Warriors</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Bears vs Brewers</td>
+                  <td>0 - 0</td>            
+                </tr>
+                <tr>
+                  <td>Braves vs Giants</td>
+                  <td>0 - 0</td>           
+                </tr>
+                <tr>
+                  <td>Dodgers vs Lions</td>
+                  <td>0 - 0</td>            
+                </tr>              
+              </tbody>
+            </table>
+        </div>     
+        
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/holder/holder.js"></script>
+
+
+    <script>
+      
+
+      $(document).ready(function(){
+        $('.hideField').hide(); //end hide
+        var league_array=[];
+        $("#createTeam").click(function(){
+            var team_array=[];
+            $(".team_inputs").each(function(){
+              team_array.push($(this).val());
+            }); //closes team array
+          league_array.push(team_array);  
+          console.log(league_array);
+          printTeam(team_array);
+          clearForm();
+          printAlert()
+        }); //closes click function
+
+        function printTeam(team_array) {
+          if (league_array.length < 9) {
+            $("#standings").append("<tr><td>" + team_array[0] + "</td>" + "<td>" + Number(team_array[6]) + "</td>" + "<td>" + Number(team_array[7]) + "</td>" + "<td>" + Number(0).toFixed(3) + "</td></tr>"); //closes append
+          } else {
+            $('#AddTeamBlueBtn').hide();
+            $('#alert').addClass("alert alert-danger").append("Your league is now full.");
+          };
+          };  //closes printTeam
+        
+        function clearForm(){
+          $(".team_inputs").each(function(){
+            $(this).val("");
+           }); //closes each function
+          }; //closes clearForm function
+
+        function printAlert(){
+            if (league_array.length < 4) {
+              $('#alert').addClass("alert alert-danger").append("Not enough teams")
+            } else {
+              $('#alert').hide();
+            }; 
+          }; //closes printMessage function 
+        
+
+      }); //closes document.ready
+
+    </script>
+
+    </body>
+  </html>
