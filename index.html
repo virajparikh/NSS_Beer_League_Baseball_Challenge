@@ -185,10 +185,20 @@
         }
 
         function createWeeks() {
+          $.ajax({
+              url: '/backliftapp/team',
+              type: "GET",
+              dataType: "json",
+              success: function(data) {
           //if (team.length < 4) {
-            $("<tr> + <td>" + team.name[0] + "vs" + team.name[1] + "</td> + </tr>" ).appendTo('#Week1');
-          };
-        
+              console.log(data);
+            for (var i = 0; i < data.length; i++) {
+            $('#Week1').append("<tr> + <td>" + data.name[0] + "vs" + data.name[1] + "</td> + </tr>" );
+              }
+            }
+          });
+        }
+        createWeeks();
 
        /* function addTeamToTable(team) {
             $(
