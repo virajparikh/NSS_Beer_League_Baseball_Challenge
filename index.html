@@ -10,22 +10,8 @@
 
     <!-- Le styles -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .hero-unit thead {
-        background-color: #ccc;
-      }
-      thead {
-        background-color: #eee;
-      }      
-      .row tbody tr:hover {
-        background-color: lightYellow;
-      }
-    </style>
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">    
+    <link href="assets/css/custom.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -35,15 +21,16 @@
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="assets/ico/favicon.png">
-
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="assets/ico/favicon.png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
+      var leagueArray=[];
       $(document).ready(function() {
-        // get from database
+        
+        // Get teams from database
         $.ajax({
           url: 'backliftapp/team',
           type: "GET",
@@ -53,175 +40,158 @@
             for (var i = 0; i < data.length; i++) {
               addTeamToTable(data[i]);
               //populateTeamList(data[i]);
-            }
-            doPopovers();
-            track("Json init!");
-            track("Teams loaded!");
-          }
-        }); // end ajax
-      }); // end ready
-       
-        // BASEBALL SCRIPT ========================================================= -->
-        //var leagueAll = [];  new comment out
-
-        // add team to league
-        function addTeam() {   //addTeam fires onclick Add Team button
-            var team = {
-              //number: $("#teamNumber").val(),
-              name: $("#teamName").val(),
-              mgrFirst: $("#firstName").val(),
-              mgrLast: $("#lastName").val(),
-              mgrPhone: $("#phoneNum").val(),
-              //mgrEmail: $("#email").val(),
-              mgrZip: $("#zipCode").val(),
-              sponsor: $("#sponsor").val(),
-              wins: 0,
-              losses: 0
             };
 
-            $.ajax({
-              url: '/backliftapp/team',
-              type: "POST",
-              dataType: "json",
-              data: team,
-              success: function (data) {
-                console.dir(data);
-                addTeamToTable(data); //see below for function definition
-                //populateTeamList(data); 
-                clearForm(); //see below for function definition
-                createWeeks();
-                doPopovers();
-                }
-            });
-          }; // end addTeam
+          if (data.length < 4) {
+            //alert('There are less than 8 teams.');
+            $('#alert').append('<div class="alert alert-info alert-text">Beer league will be formed when a minimum of 4 teams have registered.</div>');
+          };
+          if (data.length >= 8){
+            $('#addTeamBtn').hide();
+            $('#alert').append('<div class="alert alert-danger alert-text">Registration is closed. All spots are filled!</div>');
+          };
 
-        function addTeamToTable(team) {
-            $(
-              "<tr id='"+ team.id +"'>" +
-              "<td><span class='show'>" + team.name + "</span>" +
-              "<p class='more'><br>" +
-              "Manager: " + team.mgrFirst + " " + team.mgrLast + "<br>" +
-              "Phone: " + team.mgrPhone + "<br>" +
-              " <em>Sponsored by:</em> " + team.sponsor +
-              //"E-mail: " + team.mgrEmail + "<br></p>" +
-              "</td>" +
-              "<td>" + team.mgrFirst + "</td>" +
-              "<td>" + team.wins + "</td>" +
-              "<td>" + team.losses + "</td>" +
-              "<td>" + "0.000" + "</td>" +
-              "<td>" + "<a class='manage btn btn-inverse' onclick='deleteTeam(\"" + team.id + "\")'>Delete Team</a>" + "</td>" +
-              "</tr>").appendTo('#standings tbody');
-          } //end addTeamToTable
+            popTips();
+            createSchedule()
+
+          }
+        }); // End .ajax()
+
+        // Call Boostrap functions
+        $('.alert').alert();
+        $('#mgrTip').tooltip();
+        $('#tips').popover();
+        $('#teamModal').on('shown', function () {
+            $('#teamName').focus();
+        });
+
+      }); // End doc.ready
+       
+        // BASEBALL SCRIPT ========================================================= -->
+        var leagueAll = [];
+
+        var team = {
+          name: $("#teamName").val(),
+          mgrFirst: $("#firstName").val(),
+          mgrLast: $("#lastName").val(),
+          mgrPhone: $("#phoneNum").val(),
+          //mgrEmail: $("#email").val(),
+          mgrZip: $("#zipCode").val(),
+          sponsor: $("#sponsor").val(),
+          wins: 0,
+          losses: 0
+        };
+
+        // Add a team to The Beer League
+        function addTeam() {
+          var team = {
+            name: $("#teamName").val(),
+            mgrFirst: $("#firstName").val(),
+            mgrLast: $("#lastName").val(),
+            mgrPhone: $("#phoneNum").val(),
+            //mgrEmail: $("#email").val(),
+            mgrZip: $("#zipCode").val(),
+            sponsor: $("#sponsor").val(),
+            wins: 0,
+            losses: 0
+          };
+
+          $.ajax({
+            url: '/backliftapp/team',
+            type: "POST",
+            dataType: "json",
+            data: team,
+            success: function (data) {
+              //console.dir(data);
+              addTeamToTable(data);
+              //populateTeamList(data); 
+              clearForm();
+              popTips();
+              }
+          });
+
+        }; // end add team
+
+
+        function addTeamToTable(team) {    
+          $(
+            "<tr id='" + team.id + "'>" +
+            "<td><span id='teamPop' data-placement='top' data-original-title='" + team.name + " Team Info' data-content='Mgr. Name: " + team.mgrFirst + " " + team.mgrLast + ", Phone: " + team.mgrPhone + ", Sponsor: " + team.sponsor + "'>" + team.name + "</span>" + "</td>" + 
+            "<td><span id='mgrTip' data-placement='right' data-original-title='615-555-5555'>" + team.mgrFirst + " " + team.mgrLast + "</span></td>" + "<td>" + team.wins + "</td>" + 
+            "<td>" + team.losses + "</td>" + "<td>" + ".000" + "</td>" + 
+            "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small dropdown-toggle' data-toggle='dropdown' href='#'> Manage <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" + "<li class='divider'>" + "</li>" + "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTeam(\"" + team.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + "</ul>" + "</div>" + "</td>" + 
+            "</tr>").appendTo('#standings tbody');          
+            };       
 
         function clearForm() {
-            $(".team_inputs").each(function () {
-              $(this).val("");
-            });
-          }; //end clearForm
-
-        function deleteTeam(id) {
-            var team = {
-              name: $("#teamName").val(),
-              mgrFirst: $("#firstName").val(),
-              mgrLast: $("#lastName").val(),
-              mgrPhone: $("#phoneNum").val(),
-              //mgrEmail: $("#email").val(),
-              mgrZip: $("#zipCode").val(),
-              sponsor: $("#sponsor").val(),
-              wins: 0,
-              losses: 0
-            }; 
-
-            var conf = confirm("Are you sure you want to delete this team?");
-            if (conf == true) {
-              $.ajax({
-                url: "backliftapp/team/" + id,
-                type: "DELETE",
-                dataType: "json",
-                success: function () {
-                  $('#' + id).remove();
-                }
-              });
-            track("deleted: " + id)
-            }  
-          } // end deleteTeam
-
-        function track(item) {
-            $('#console').append(item + "<br>");
-          }
-
-        function manage() {
-            track("You are now logged in");
-            $(".manage").css("display", "inline");
-          }
-
-        function startSeason() {
-            $(".playing").css("display", "none");
-            $(".standings").css("display", "inline");
-            track("Season Started!")
-          }
-
-        // function populateTeamList(team) {
-        //   $(
-        //     "<h4 class='show'>" + team.name + " <em>sponsored by</em> " + team.sponsor + " </h4>" + 
-        //     "<p class='more'>" +
-        //     "Manager: " + team.mgrFirst + " " + team.mgrLast + "<br>" +
-        //     "Phone: " + team.mgrPhone + "<br>" +
-        //     "E-mail: " + team.mgrEmail + "<br>" +
-        //     "<a class='manage deleteTeam'>Delete Team</a>" +
-        //     "</p>").appendTo('#teamList');
-        // }
-
-        
-
-        // Popover like functionality 
-        function doPopovers() { 
-          $('.more').hide();
-          $('.show').click(
-          function () {
-            $(this).next('.more').toggle();
-            track("Popover working!")
+          $(".team_inputs").each(function () {
+            $(this).val("");
           });
-        }
+        };
 
-        function createWeeks() {
+         function deleteTeam(id) {
+          $('#cutTeam').click(function() {
+            $.ajax({
+              url: "backliftapp/team/" + id,
+              type: "DELETE",
+              dataType: "json",
+              success: function () {
+                $('#' + id).remove();
+              }
+            }); // End .ajax()
+          }); // End .click()
+          };
+
+        // Call Bootstrap popover & tooltip functions 
+        function popTips(id) { 
+          $('#teamPop').popover();
+          $('#mgrTip').tooltip();
+        };
+
+        function createSchedule() {
           $.ajax({
               url: '/backliftapp/team',
               type: "GET",
               dataType: "json",
               success: function(data) {
-          //if (team.length < 4) {
-              console.log(data);
-            for (var i = 0; i < data.length; i++) {
-            $('#Week1').append("<tr> + <td>" + data.name[0] + "vs" + data.name[1] + "</td> + </tr>" );
-              }
-            }
-          });
-        }
-        createWeeks();
+                for (var i = 0; i < data.length; i++) {
+                $('#Week1').append("<tr>" + 
+                  "<td>" + data[i].name + " vs. " + data[i+1].name + "</td>" + 
+                  "<td>" + 0 + " - " + 0 + "</td>" +
+                  "</tr>" );
+                  }
+                }  //end success
+              }); //end ajax
+            }; //end createSchedule 
 
-       /* function addTeamToTable(team) {
-            $(
-              "<tr id='"+ team.id +"'>" +
-              "<td><span class='show'>" + team.name + "</span>" +
-              "<p class='more'><br>" +
-              "Manager: " + team.mgrFirst + " " + team.mgrLast + "<br>" +
-              "Phone: " + team.mgrPhone + "<br>" +
-              " <em>Sponsored by:</em> " + team.sponsor +
-              //"E-mail: " + team.mgrEmail + "<br></p>" +
-              "</td>" +
-              "<td>" + team.mgrFirst + "</td>" +
-              "<td>" + team.wins + "</td>" +
-              "<td>" + team.losses + "</td>" +
-              "<td>" + "0.000" + "</td>" +
-              "<td>" + "<a class='manage btn btn-inverse' onclick='deleteTeam(\"" + team.id + "\")'>Delete Team</a>" + "</td>" +
-              "</tr>").appendTo('#standings tbody');
-          } //end addTeamToTable*/
+            var sched4 = [ 
+                        [ [1, 4], [2, 3 ] ],
+                        [ [1, 3], [2, 4] ],
+                        [ [1, 2], [3, 4] ]
+                        ];
+
+            var sched6 = [ 
+                        [ [1, 6], [2, 5], [3, 4] ],
+                        [ [1, 5], [4, 6], [2, 3] ],
+                        [ [1, 4], [3, 5], [2, 6] ],
+                        [ [1, 3], [2, 4], [5, 6] ],
+                        [ [1, 2], [3, 6], [4, 5] ],
+                        ];
+
+            var sched8 = [
+                        [ [1, 8], [2, 7], [3, 6], [4, 5] ],
+                        [ [1, 7], [6, 8], [2, 5], [3, 4] ],
+                        [ [1, 6], [5, 7], [4, 8], [2, 3] ],
+                        [ [1, 5], [4, 6], [3, 7], [2, 8] ],
+                        [ [1, 4], [3, 5], [2, 6], [7, 8] ],
+                        [ [1, 3], [2, 4], [5, 8], [6, 7] ],
+                        [ [1, 2], [3, 8], [4, 7], [5, 6] ],
+                        ];
+        
     </script>
 
   </head>
-  
-  <body>
+    <body>
 
       <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -231,11 +201,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Beer League Project</a>
+          <a class="brand" href="#">The Beer League</a>
           <div class="nav-collapse collapse">
 
             <ul class="pull-right">
-              <a href="#teamModal" role="button" class="btn btn-danger" data-toggle="modal">Add Team</a>
+              <a id="addTeamBtn" href="#teamModal" role="button" class="btn btn-danger" data-toggle="modal">Add Team</a>
               <a href="#resultsModal" role="button" class="btn" data-toggle="modal">Update Results</a>
             </ul>
 
@@ -245,18 +215,15 @@
     </div>
 
     <div class="container">
-      <div id="json"></div>
+
+      <div id="alert"></div>
+
+      <div class="alert alert-success alert-text">Scores successfully updated! <a class="close" data-dismiss="alert" href="#">&times;</a></div>
 
       <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
+      <div class="hero-unit">        
 
-        <div class="alert alert-danger">Registration is closed. All spots are filled.</div>
-
-        <div class="alert alert-success">Scores successfully updated!</div>
-
-        <div class="alert alert-info">Beer league will be formed when a minimum of 4 teams have registered.</div>
-
-         <div class="text-center">
+        <div class="text-center">
           <h1>Team Standings</h1>
           <br>
            
@@ -268,23 +235,25 @@
                 <th>Wins</th>
                 <th>Loses</th>
                 <th>Season %</th>
-                <th>Edit</th>
+                <th>Options</th>
               </tr>
             </thead>
             <tbody>              
-              <!-- teams will be added by function addTeamToTable -->
+              <!-- Table rows & data added by js function addTeamToTable -->
             </tbody>
           </table>
 
-      </div>
+          <!-- <a href="#" id="teamPop" class="btn btn-large btn-danger" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">Click to toggle popover</a> -->
+
+        </div><!-- /.text-center -->
 
         <!-- ADD TEAM MODAL
-          ================================ -->
+        ================================ -->
 
-      <div id="teamModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="teamModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Add your team information</h3>
+            <h3 id="myModalLabel">Batter up! <small>Register your team for the Beer Leagues</small></h3>
           </div>
           <div class="modal-body">
 
@@ -309,7 +278,53 @@
               <div class="control-group">
                 <label class="control-label" for="inputSponsor">Sponsor:</label>
                 <div class="controls">
-                  <input type="text" id="sponsor" class="team_inputs" name="sponsor" placeholder="">
+                  <input type="text" id="sponsor" class="team_inputs" name="sponsor" placeholder="i.e. Recovery Spray">
+                  <input type="hidden" id="sponsor" class="team_inputs" name="wins" value="0">
+                  <input type="hidden" id="sponsor" class="team_inputs" name="loses" value="0">
+                </div>
+              </div>
+            <form>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn" type="reset">Clear</button>
+            <button id="register" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addTeam()">Add Team</button>
+          </div>
+        </div>
+
+
+         <!-- EDIT TEAM MODAL
+        ================================ -->
+
+        <div id="editTeam" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Edit Your Team Info</h3>
+          </div>
+          <div class="modal-body">
+
+            <form id="editTeamForm" class="form-horizontal">
+              <div class="control-group">
+                <label class="control-label" for="teamName">Team:</label>
+                <div class="controls">
+                  <input type="text" id="teamName" class="team_inputs" name="teamName" value="+ team.name + " placeholder="Team Name">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="manager">Manager:</label>
+                <div class="controls">
+                  <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="First Name">
+                  <input type="text" id="lastName" class="team_inputs" name="lastName" placeholder="Last Name">
+                  <input type="text" id="phoneNum" class="team_inputs" name="phoneNum" placeholder="Phone">
+                  <input type="text" id="zipCode" class="team_inputs" name="zipCode" placeholder="Zip Code">
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="inputSponsor">Sponsor:</label>
+                <div class="controls">
+                  <input type="text" id="sponsor" class="team_inputs" name="sponsor" placeholder="i.e. Recovery Spray">
                   <input type="hidden" id="sponsor" class="team_inputs" name="wins" value="0">
                   <input type="hidden" id="sponsor" class="team_inputs" name="loses" value="0">
                 </div>
@@ -319,36 +334,53 @@
           </div>
           <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button id="register" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addTeam()">Add Team</button>
+            <button id="register" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="editTeam()">Update Team</button>
           </div>
-      </div>
+        </div>
 
-          <!-- UPDATE RESULTS MODAL
-          ================================ -->
 
-          <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="createWeeks()"> </button>
-              <h3 id="myModalLabel">Update Team Scores</h3>
-            </div>
-            <div class="modal-body text-center">
-              
-              <select>
-                <option>Cardinals vs Warriors</option>
-                <option>Bears vs Brewers</option>
-                <option>Braves vs Giants</option>
-                <option>Dodgers vs Lions</option>
-              </select>
-
-              <input class="input-mini" type="text" placeholder="Team 1">
-
-              <input class="input-mini" type="text" placeholder="Team 2">
-
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-success">Update Scores</button>
-            </div>
+        <!-- DELETE CONFIRMATION MODAL
+        ================================ -->
+        <div id="deleteConfirm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Looks like this team won't make the cut!</h3>
           </div>
+          <div class="modal-body">
+            <p>Are you sure you want to cut this team from the league?</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button id="cutTeam" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Delete</button>
+          </div>
+        </div>
+
+        <!-- UPDATE RESULTS MODAL
+        ================================ -->
+
+        <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Update Team Scores</h3>
+          </div>
+          <div class="modal-body text-center">
+            
+            <select>
+              <option>Cardinals vs Warriors</option>
+              <option>Bears vs Brewers</option>
+              <option>Braves vs Giants</option>
+              <option>Dodgers vs Lions</option>
+            </select>
+
+            <input class="input-mini" type="text" placeholder="Team 1">
+
+            <input class="input-mini" type="text" placeholder="Team 2">
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success">Update Scores</button>
+          </div>
+        </div>
 
       </div><!-- /.hero-unit -->
 
@@ -364,7 +396,7 @@
                 </tr>
               </thead>
               <tbody id="Week1">
-                              
+                         
               </tbody>
             </table>
 
@@ -376,7 +408,7 @@
                 </tr>
               </thead>
               <tbody id="Week2">
-                          
+                           
               </tbody>
             </table>
         </div>
@@ -391,7 +423,7 @@
                 </tr>
               </thead>
               <tbody id="Week3">
-                              
+                          
               </tbody>
             </table>
 
@@ -403,20 +435,51 @@
                 </tr>
               </thead>
               <tbody id="Week4">
-                              
+                          
               </tbody>
             </table>
-        </div>  
 
-        <div>
+             <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 5</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody id="Week5">
+                          
+              </tbody>
+            </table>
 
-          
-        </div>
+             <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 6</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody id="Week6">
+                          
+              </tbody>
+            </table>
+
+             <table class="table table-bordered span6">
+              <thead>
+                <tr>
+                  <th>Week 7</th>
+                  <th>Final Scores</th>
+                </tr>
+              </thead>
+              <tbody id="Week7">
+                          
+              </tbody>
+            </table>
+        </div>     
         
       <hr>
 
       <footer>
-        <p>&copy; Company 2013</p>
+        <p>&copy; The Dream Team 2013</p>
       </footer>
 
     </div> <!-- /container -->
