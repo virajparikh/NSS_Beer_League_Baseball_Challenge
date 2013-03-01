@@ -150,9 +150,9 @@
               url: '/backliftapp/team',
               type: "GET",
               dataType: "json",
-              success: function(response) {
+              success: function(response) {  //response is the old "data" - the data we get back from the json file
                 var n = response.length,
-                    schedule = '';
+                    schedule ;
                 if( n == 4 ){
                   schedule = sched4;
                 } else if( n == 5 || n == 6 ){
@@ -162,19 +162,30 @@
                 }
                 //console.log(schedule);
 
-// Iterate the Weeks
-for (var i = 0; i < schedule.length; i++) {
+  // Iterate the Weeks
+  for (var i = 0; i < schedule.length; i++) {  //gives us # of weeks
   // Iterate over the teams
-  $('#schedule').append( 'Week #' + (i + 1) );
   
-  for (var j = 0; j < schedule[i].length; j++) {
-    console.log( response[ schedule[i][j][0] - 1 ]  );
-    console.log( response[ schedule[i][j][1] - 1 ]  );
-    //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-    
-  }
-
-}
+    if (n % 2 == 0) {  
+      for (var j = 0; j < schedule[i].length; j++) {
+        console.log( response[ schedule[i][j][0] - 1 ].name  );  
+        console.log( response[ schedule[i][j][1] - 1 ].name  );
+        //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
+          $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name ); //remember, response is the data returned from json, so in this case response[].name is the team name
+          
+        
+      }
+      } else {  
+      for (var j = 0; j < schedule[i].length; j++) {
+        console.log( response[ schedule[i][j][0] - 1 ].name  );
+        console.log( response[ schedule[i][j][1] - 2 ].name  );
+        //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
+          $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 2 ].name );
+          
+        
+      }
+      } 
+      };
 
                 for (var i = 0; i < schedule.length; i++) {
                 $('#Week1').append("<tr>" + 
