@@ -1,0 +1,24 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.alert-text {
+    font-size: 120%;
+}
+
+.hero-unit thead {
+    background-color: #ccc;
+}
+
+thead {
+    background-color: #eee;
+}  
+
+.row tbody tr:hover {
+    background-color: lightYellow;
+}
+
+.manage {
+    cursor: pointer;
+}
