@@ -25,187 +25,6 @@
                     <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
                                    <link rel="shortcut icon" href="assets/ico/favicon.png">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        // Get teams from database
-        $.ajax({
-          url: 'backliftapp/team',
-          type: "GET",
-          dataType: "json",
-          success: function (data) {
-            leagueAll = data;
-            for (var i = 0; i < data.length; i++) {
-              addTeamToTable(data[i]);
-              //populateTeamList(data[i]);
-            }; // End for()
-
-            // Alerts Here =========================================================== /
-            showAlerts();
-
-            popTips(); // Fire bootstrap popover and tooltip function
-
-          } // End success
-        }); // End .ajax()
-
-        
-
-        // Call Boostrap functions
-        $('.alert').alert();
-        $('#mgrTip').tooltip();
-        $('#tips').popover();
-        $('#teamModal').on('shown', function () {
-            $('#teamName').focus();
-        }); //  End .on()
-
-      }); // End doc.ready
-       
-        // BASEBALL SCRIPT ========================================================= -->
-        var leagueAll = [];
-
-        var team = {
-          name: $("#teamName").val(),
-          mgrFirst: $("#firstName").val(),
-          mgrLast: $("#lastName").val(),
-          mgrPhone: $("#phoneNum").val(),
-          //mgrEmail: $("#email").val(),
-          mgrZip: $("#zipCode").val(),
-          sponsor: $("#sponsor").val(),
-          wins: 0,
-          losses: 0
-        };
-
-        // Add a team to The Beer League
-        function addTeam() {
-
-          var team = {
-            name: $("#teamName").val(),
-            mgrFirst: $("#firstName").val(),
-            mgrLast: $("#lastName").val(),
-            mgrPhone: $("#phoneNum").val(),
-            //mgrEmail: $("#email").val(),
-            mgrZip: $("#zipCode").val(),
-            sponsor: $("#sponsor").val(),
-            wins: 0,
-            losses: 0
-          };
-
-          $.ajax({
-            url: '/backliftapp/team',
-            type: "POST",
-            dataType: "json",
-            data: team,
-            success: function (data) {
-              //console.dir(data);
-              addTeamToTable(data);
-              //populateTeamList(data); 
-              clearForm();
-              //popTips();
-              showAlerts();              
-
-            } // End success
-          });
-
-        }; // end add team
-
-        // Edit team info
-        function editTeam(id) {
-
-          $('#edit').click(function() {
-            $.ajax({
-              url: '/backliftapp/team/' + id,
-              type: "PUT",
-              dataType: "json",
-              data: team,
-              success: function (data) {
-                console.dir(data);
-                addTeamToTable(data);
-                //populateTeamList(data); 
-                clearForm();
-                popTips();
-                }
-            });
-          }); // End .click()
-
-        }; // End editTeam()
-
-        function deleteTeam(id) {
-
-          $('#cutTeam').click(function() {
-            $.ajax({
-              url: "backliftapp/team/" + id,
-              type: "DELETE",
-              dataType: "json",
-              success: function () {
-                $('#' + id).remove();
-              }
-            }); // End .ajax()
-          }); // End .click()
-        };
-
-        function clearForm() {
-          $(".team_inputs").each(function () {
-            $(this).val("");
-          });
-        };
-
-        // function populateTeamList(team) {
-        //   $(
-        //     "<h4 class='show'>" + team.name + " <em>sponsored by</em> " + team.sponsor + " </h4>" + 
-        //     "<p class='more'>" +
-        //     "Manager: " + team.mgrFirst + " " + team.mgrLast + "<br>" +
-        //     "Phone: " + team.mgrPhone + "<br>" +
-        //     "E-mail: " + team.mgrEmail + "<br>" +
-        //     "<a class='manage deleteTeam'>Delete Team</a>" +
-        //     "</p>").appendTo('#teamList');
-        // }
-
-        function addTeamToTable(team) {    
-          $(
-            "<tr id='" + team.id + "'>" +
-            "<td>" + "<span id='teamPop' data-original-title='" + team.name + " Team Info' data-content='Mgr. Name: " + team.mgrFirst + " " + team.mgrLast + ", Phone: " + team.mgrPhone + ", Sponsor: " + team.sponsor + "'>" + team.name + "</span>" +
-            "</td>" +
-            "<td><span id='mgrTip' data-placement='left' data-original-title='" + team.mgrPhone + "'>" + team.mgrFirst + " " + team.mgrLast + "</span></td>" +
-            "<td>" + team.wins + "</td>" +
-            "<td>" + team.losses + "</td>" +
-            "<td>" + ".000 %" + "</td>" +
-            "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small dropdown-toggle' data-toggle='dropdown' href='#'> Manage <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
-              "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
-              "<li class='divider'>" + "</li>" +
-              "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTeam(\"" + team.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
-            "</ul>" + "</div>" + "</td>" +
-            "</tr>").appendTo('#standings tbody'
-          );          
-        }       
-
-        // Call Bootstrap popover & tooltip functions 
-        function popTips(id) { 
-          $('#standings').popover({
-            selector: "#teamPop",
-            html: true
-          });
-          $('#standings').tooltip({
-            selector: "#mgrTip",
-            html: true
-          });
-        }
-
-        function showAlerts() {
-          $('#register').click(function() {
-            if (leagueAll.length < 4) {
-              $('#alert').append('<div class="alert alert-info alert-text">Beer league will be formed when a minimum of 4 teams have registered.</div>');
-            }; // End if
-
-            if (leagueAll.length >= 8){
-              alert('There are 8 teams.');
-              $('#addTeamBtn').hide();
-              $('#alert').append('<div class="alert alert-danger alert-text">Registration is closed. All spots are filled!</div>');
-            };
-          }); // End .click()
-
-        } // End showAlerts()
-    </script>
-
   </head>
     <body>
 
@@ -258,8 +77,6 @@
               <!-- Table rows & data added by js function addTeamToTable -->
             </tbody>
           </table>
-
-          <!-- <a href="#" id="teamPop" class="btn btn-large btn-danger" data-toggle="popover" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">Click to toggle popover</a> -->
 
         </div><!-- /.text-center -->
 
@@ -324,6 +141,7 @@
                 <label class="control-label" for="teamName">Team:</label>
                 <div class="controls">
                   <input type="text" id="teamName" class="team_inputs" name="teamName" value="+ team.name + " placeholder="Team Name">
+
                 </div>
               </div>
 
@@ -345,12 +163,14 @@
                   <input type="hidden" id="sponsor" class="team_inputs" name="loses" value="0">
                 </div>
               </div>
+
             <form>
 
           </div>
           <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
             <button id="edit" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="editTeam()">Update Team</button>
+
           </div>
         </div>
 
@@ -404,6 +224,7 @@
         <br>
 
         <div class="row">
+          <div id="schedule"></div>
           <table class="table table-bordered span6">
               <thead>
                 <tr>
@@ -411,23 +232,8 @@
                   <th>Final Scores</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Cardinals vs Warriors</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Bears vs Brewers</td>
-                  <td>0 - 0</td>            
-                </tr>
-                <tr>
-                  <td>Braves vs Giants</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Dodgers vs Lions</td>
-                  <td>0 - 0</td>            
-                </tr>              
+              <tbody id="Week1">
+                         
               </tbody>
             </table>
 
@@ -438,23 +244,8 @@
                   <th>Final Scores</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Cardinals vs Warriors</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Bears vs Brewers</td>
-                  <td>0 - 0</td>            
-                </tr>
-                <tr>
-                  <td>Braves vs Giants</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Dodgers vs Lions</td>
-                  <td>0 - 0</td>            
-                </tr>              
+              <tbody id="Week2">
+                           
               </tbody>
             </table>
         </div>
@@ -468,23 +259,8 @@
                   <th>Final Scores</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Cardinals vs Warriors</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Bears vs Brewers</td>
-                  <td>0 - 0</td>            
-                </tr>
-                <tr>
-                  <td>Braves vs Giants</td>
-                  <td>0 - 0</td>           
-                </tr>
-                <tr>
-                  <td>Dodgers vs Lions</td>
-                  <td>0 - 0</td>            
-                </tr>              
+              <tbody id="Week3">
+                          
               </tbody>
             </table>
 
@@ -495,23 +271,44 @@
                   <th>Final Scores</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="Week4">
+                          
+              </tbody>
+            </table>
+
+             <table class="table table-bordered span6">
+              <thead>
                 <tr>
-                  <td>Cardinals vs Warriors</td>
-                  <td>0 - 0</td>           
+                  <th>Week 5</th>
+                  <th>Final Scores</th>
                 </tr>
+              </thead>
+              <tbody id="Week5">
+                          
+              </tbody>
+            </table>
+
+             <table class="table table-bordered span6">
+              <thead>
                 <tr>
-                  <td>Bears vs Brewers</td>
-                  <td>0 - 0</td>            
+                  <th>Week 6</th>
+                  <th>Final Scores</th>
                 </tr>
+              </thead>
+              <tbody id="Week6">
+                          
+              </tbody>
+            </table>
+
+             <table class="table table-bordered span6">
+              <thead>
                 <tr>
-                  <td>Braves vs Giants</td>
-                  <td>0 - 0</td>           
+                  <th>Week 7</th>
+                  <th>Final Scores</th>
                 </tr>
-                <tr>
-                  <td>Dodgers vs Lions</td>
-                  <td>0 - 0</td>            
-                </tr>              
+              </thead>
+              <tbody id="Week7">
+                          
               </tbody>
             </table>
         </div>     
@@ -527,7 +324,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  <!-- above link must stay on top of all other script links so the other ones run -->
     <script src="assets/js/bootstrap-alert.js"></script>
     <script src="assets/js/bootstrap-modal.js"></script>
     <script src="assets/js/bootstrap-dropdown.js"></script>
@@ -537,6 +334,8 @@
     <script src="assets/js/bootstrap-typeahead.js"></script>
     <script src="assets/js/bootstrap-transition.js"></script>
     <script src="assets/js/holder/holder.js"></script>
+
+    <script src="assets/js/mainlogic.js"></script>
 
     </body>
   </html>
