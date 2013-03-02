@@ -41,7 +41,7 @@
 
             <ul class="pull-right">
               <a id="addTeamBtn" href="#teamModal" role="button" class="btn btn-danger" data-toggle="modal">Add Team</a>
-              <a href="#resultsModal" role="button" class="btn" data-toggle="modal">Update Results</a>
+              <a href="#resultsModal" role="button" class="btn" data-toggle="modal">Post Scores</a>
             </ul>
 
           </div><!--/.nav-collapse -->
@@ -191,7 +191,7 @@
           </div>
         </div>
 
-        <!-- UPDATE RESULTS MODAL
+        <!-- UPDATE SCORES MODAL
         ================================ -->
 
         <div id="resultsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -199,22 +199,20 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Update Team Scores</h3>
           </div>
-          <div class="modal-body text-center">
-            
-            <select>
-              <option>Cardinals vs Warriors</option>
-              <option>Bears vs Brewers</option>
-              <option>Braves vs Giants</option>
-              <option>Dodgers vs Lions</option>
-            </select>
+          <div class="modal-body">
 
-            <input class="input-mini" type="text" placeholder="Team 1">
+            <form>              
+              <select id="teamVS">
+                <!-- Function appends matchups -->
+              </select>
 
-            <input class="input-mini" type="text" placeholder="Team 2">
+              <input id="scoreOne" class="input-mini" type="text" placeholder="Team 1">
+              <input id="scoreTwo" class="input-mini" type="text" placeholder="Team 2">
+            </form>
 
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success">Update Scores</button>
+            <button id="updateBtn" class="btn btn-success" onclick="updateScores()">Update Scores</button>
           </div>
         </div>
 

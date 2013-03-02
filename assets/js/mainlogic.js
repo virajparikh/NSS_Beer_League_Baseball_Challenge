@@ -1,4 +1,4 @@
-
+ // BASEBALL SCRIPT ========================================================= -->
       var leagueArray=[];
       $(document).ready(function() {
         
@@ -32,9 +32,9 @@
             $('#teamName').focus();
         });
 
-      }); // End doc.ready
-       
-        // BASEBALL SCRIPT ========================================================= -->
+      }); // END DOC .READY() ========================================================= -->
+
+
         var leagueAll = [];
 
         var team = {
@@ -79,7 +79,6 @@
 
         }; // end add team
 
-
         function addTeamToTable(team) {    
           $(
             "<tr id='" + team.id + "'>" +
@@ -89,7 +88,7 @@
             "<td>" + team.wins + "</td>" +
             "<td>" + team.losses + "</td>" +
             "<td>" + ".000 %" + "</td>" +
-            "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small dropdown-toggle' data-toggle='dropdown' href='#'> Manage <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
+            "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Manage <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
               "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
               "<li class='divider'>" + "</li>" +
               "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTeam(\"" + team.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
@@ -99,7 +98,7 @@
         }        
 
         function clearForm() {
-          $(".team_inputs").each(function () {
+          $(".team_inputs", "#scoreOne", "#scoreTwo").each(function () {
             $(this).val("");
           });
         };
@@ -191,45 +190,78 @@
                         [ [1, 2], [3, 8], [4, 7], [5, 6] ],
                         ];
 
-            $.ajax({
-                url: '/backliftapp/team',
-                type: "GET",
-                dataType: "json",
-                success: function(response) {
-                  var n = response.length,
-                      schedule = '';
-                  if( n == 4 ){
-                    schedule = sched4;
-                  } 
-                  else if( n == 5 || n == 6 ){
-                    schedule = sched6;
-                  } 
-                  else if( n == 7 || n == 8 ){
-                    schedule = sched8;
-                  }
-                  //console.log(schedule);
+          $.ajax({
+              url: '/backliftapp/team',
+              type: "GET",
+              dataType: "json",
+              success: function(response) {  //response is the old "data" - the data we get back from the json file
+                var n = response.length,
+                    schedule ;
+                if( n == 4 ){
+                  schedule = sched4;
+                } else if( n == 5 || n == 6 ){
+                  schedule = sched6;
+                } else if( n == 7 || n == 8 ){
+                  schedule = sched8;
+                }
+                //console.log(schedule);
 
-                  // Iterate the Weeks
-                  for (var i = 0; i < schedule.length; i++) {
-                    // Iterate over the teams
-                    $('#schedule').append( 'Week #' + (i + 1) );
-                    
+                // Iterate the Weeks
+                for (var i = 0; i < schedule.length; i++) {  //gives us # of weeks
+                // Iterate over the teams
+                $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>')
+                
+                  if (n % 2 == 0) {  
                     for (var j = 0; j < schedule[i].length; j++) {
-                      console.log( response[ schedule[i][j][0] - 1 ]  );
-                      console.log( response[ schedule[i][j][1] - 1 ]  );
+                      console.log( response[ schedule[i][j][0] - 1 ].name  );  
+                      console.log( response[ schedule[i][j][1] - 1 ].name  );
                       //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
+                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>"); //remember, response is the data returned from json, so in this case response[].name is the team name
+                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                          
                       
                     }
+                    } else {  
+                    for (var j = 0; j < schedule[i].length; j++) {
+                      console.log( response[ schedule[i][j][0] - 1 ].name  );
+                      console.log( response[ schedule[i][j][1] - 2 ].name  );
+                      //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
+                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 2 ].name );
+                        $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                        
+                      
+                    }
+                    } 
+                    };
 
-                  } // End iterate weeks
 
-                  for (var i = 0; i < schedule.length; i++) {
-                    $('#Week1').append("<tr>" + 
-                      "<td>" + response[i].name + " vs. " + response[i+1].name + "</td>" + 
-                      "<td>" + 0 + " - " + 0 + "</td>" +
-                      "</tr>" );
-                  } // End for
 
-                }  // End success
-            }); // End .ajax()
-        }; // End createSchedule()
+                // for (var i = 0; i < schedule.length; i++) {
+                //   $('#Week1').append("<tr>" + 
+                //     "<td>" + response[i].name + " vs. " + response[i+1].name + "</td>" + 
+                //     "<td>" + 0 + " - " + 0 + "</td>" +
+                //     "</tr>" );
+                //   }
+
+                }  //end success
+              }); //end ajax
+            }; //end createSchedule
+
+            function updateScores() {
+              var matches = {
+                match: $("#teamMatch select option:selected").val(),
+                teamOneScore: $("#scoreOne").val(),
+                teamTwoScore: $("#scoreTwo").val(),
+              };
+
+              $.ajax({
+                url: '/backliftapp/scores',
+                type: "POST",
+                dataType: "json",
+                data: matches,
+                success: function (data) {
+                  console.log(data);
+                  clearForm();
+                  }
+              }); // End .ajax()
+        }; // End updateScores()
