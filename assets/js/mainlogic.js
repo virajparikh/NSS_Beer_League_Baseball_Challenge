@@ -207,45 +207,34 @@
                 //console.log(schedule);
 
                 // Iterate the Weeks
-                for (var i = 0; i < schedule.length; i++) {  //gives us # of weeks
-                // Iterate over the teams
-                $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>')
+                for (var i = 0; i < schedule.length; i++) {  
                 
-                  if (n % 2 == 0) {  
+                  $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>')  //gives us # of weeks
+                  // Iterate over the teams
+                  if (n % 2 == 0) {  //if even number of teams 
                     for (var j = 0; j < schedule[i].length; j++) {
-                      console.log( response[ schedule[i][j][0] - 1 ].name  );  
-                      console.log( response[ schedule[i][j][1] - 1 ].name  );
-                      //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>"); //remember, response is the data returned from json, so in this case response[].name is the team name
-                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
-                          
-                      
-                    }
-                    } else {  
-                    for (var j = 0; j < schedule[i].length; j++) {
-                      console.log( response[ schedule[i][j][0] - 1 ].name  );
-                      console.log( response[ schedule[i][j][1] - 2 ].name  );
-                      //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 2 ].name );
-                        $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
-                        
-                      
-                    }
-                    } 
-                    };
+                      //console.log( response[ schedule[i][j][0] - 1 ].name  );  
+                      //console.log( response[ schedule[i][j][1] - 1 ].name  );
+                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>"); // 'response' is the data returned from json, so in this case response[].name is the team name
+                        $('#teamVS').append('<<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                        } //end for statement
+                
+                        } else {  //if odd number of teams 
+                          for (var j = 0; j < schedule[i].length; j++) {
+                            if ( schedule[i][j][1] === schedule.length+1) {
+                               $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " BYE" + "<br>");
+                               } else {
+                              $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>");
+                              $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                              }; 
 
+                            }; //end for statement
+                          } //end else statement for odd number of team
+                        }; //end of original for statement
 
-
-                // for (var i = 0; i < schedule.length; i++) {
-                //   $('#Week1').append("<tr>" + 
-                //     "<td>" + response[i].name + " vs. " + response[i+1].name + "</td>" + 
-                //     "<td>" + 0 + " - " + 0 + "</td>" +
-                //     "</tr>" );
-                //   }
-
-                }  //end success
-              }); //end ajax
-            }; //end createSchedule
+                    }  //end success
+                  }); //end ajax
+                }; //end createSchedule
 
             function updateScores() {
               var matches = {
