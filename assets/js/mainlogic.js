@@ -1,5 +1,6 @@
  // BASEBALL SCRIPT ========================================================= -->
       var leagueArray=[];
+      var scoresAll=[];
       $(document).ready(function() {
         
         // Get teams from database
@@ -11,7 +12,6 @@
             leagueAll = data;
             for (var i = 0; i < data.length; i++) {
               addTeamToTable(data[i]);
-              //populateTeamList(data[i]);
             };
 
             // Call alerts function
@@ -21,6 +21,19 @@
             popTips(); 
             createSchedule()
 
+          } // End success
+        }); // End .ajax()
+
+        // Get scores from database
+        $.ajax({
+          url: 'backliftapp/scores',
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            scoresAll = data;
+            for (var i = 0; i < data.length; i++) {
+              addScoresToTable(data[i]);
+            };
           } // End success
         }); // End .ajax()
 
@@ -98,7 +111,7 @@
         }        
 
         function clearForm() {
-          $(".team_inputs", "#scoreOne", "#scoreTwo").each(function () {
+          $(".team_inputs", ".score_inputs").each(function () {
             $(this).val("");
           });
         };
@@ -124,7 +137,7 @@
 
         // }; // End editTeam()
 
-         function deleteTeam(id) {
+        function deleteTeam(id) {
           $('#cutTeam').click(function() {
             $.ajax({
               url: "backliftapp/team/" + id,
@@ -135,7 +148,7 @@
               }
             }); // End .ajax()
           }); // End .click()
-          };
+        }; // End deleteTeam()
 
         // Call Bootstrap popover & tooltip functions 
         function popTips(id) { 
@@ -208,60 +221,74 @@
 
                 // Iterate the Weeks
                 for (var i = 0; i < schedule.length; i++) {  //gives us # of weeks
-                // Iterate over the teams
-                $('#schedule').append('<h5> Week #' + (i + 1) + ':</h5>')
-                
+
+                  $('#schedule').append('<table class="table table-bordered span6"><thead><tr><th> Week ' + (i + 1) + '<th>Final Scores</th></tr></thead><tbody id="weekOneMatches"></tbody></table>')
+                  
+                  // Iterate over the teams
                   if (n % 2 == 0) {  
                     for (var j = 0; j < schedule[i].length; j++) {
-                      console.log( response[ schedule[i][j][0] - 1 ].name  );  
-                      console.log( response[ schedule[i][j][1] - 1 ].name  );
+                      // console.log( response[ schedule[i][j][0] - 1 ].name  );  
+                      // console.log( response[ schedule[i][j][1] - 1 ].name  );
                       //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>"); //remember, response is the data returned from json, so in this case response[].name is the team name
-                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
-                          
-                      
+                        $('#weekOneMatches').append("<tr><td>" + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "</td><td id='scores'></td></tr>"); // Response is the data returned from json, so in this case response[].name is the team name
+
+                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>');                    
                     }
-                    } else {  
+                  } 
+                  else {  
                     for (var j = 0; j < schedule[i].length; j++) {
                       console.log( response[ schedule[i][j][0] - 1 ].name  );
                       console.log( response[ schedule[i][j][1] - 2 ].name  );
                       //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
                         $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 2 ].name );
-                        $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
-                        
-                      
+                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
                     }
-                    } 
-                    };
+                  } // End else{}
+                }; // End for()
+              }  //end success
+          }); //end ajax
+        }; //end createSchedule
 
+        var scoresAll = [];
 
+        var matches = {
+          teams: $("#teamVS").val(),
+          teamOneScore: $("#scoreOne").val(),
+          teamTwoScore: $("#scoreTwo").val(),
+        };
 
-                // for (var i = 0; i < schedule.length; i++) {
-                //   $('#Week1').append("<tr>" + 
-                //     "<td>" + response[i].name + " vs. " + response[i+1].name + "</td>" + 
-                //     "<td>" + 0 + " - " + 0 + "</td>" +
-                //     "</tr>" );
-                //   }
+      function addScores() {
+        var matches = {
+          teams: $("#teamVS").val(),
+          teamOneScore: $("#scoreOne").val(),
+          teamTwoScore: $("#scoreTwo").val(),
+        };
 
-                }  //end success
-              }); //end ajax
-            }; //end createSchedule
+        $.ajax({
+          url: '/backliftapp/scores',
+          type: "POST",
+          dataType: "json",
+          data: matches,
+          success: function (data) {
+            addScoresToTable(data);                 
+            clearForm();
+            }
+        }); // End .ajax()
+      }; // End updateScores()
 
-            function updateScores() {
-              var matches = {
-                match: $("#teamMatch select option:selected").val(),
-                teamOneScore: $("#scoreOne").val(),
-                teamTwoScore: $("#scoreTwo").val(),
-              };
+      function addScoresToTable(matches) {
+        $('#test tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
+      }
 
-              $.ajax({
-                url: '/backliftapp/scores',
-                type: "POST",
-                dataType: "json",
-                data: matches,
-                success: function (data) {
-                  console.log(data);
-                  clearForm();
-                  }
-              }); // End .ajax()
-        }; // End updateScores()
+      function deleteScores(id) {
+        $('#deleteScore').click(function() {
+          $.ajax({
+            url: "backliftapp/scores/" + id,
+            type: "DELETE",
+            dataType: "json",
+            success: function () {
+              $('#' + id).remove();
+            }
+          }); // End .ajax()
+        }); // End .click()
+      }; // End deleteScores()

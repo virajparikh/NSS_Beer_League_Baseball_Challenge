@@ -175,7 +175,7 @@
         </div>
 
 
-        <!-- DELETE CONFIRMATION MODAL
+        <!-- DELETE TEAMS CONFIRMATION MODAL
         ================================ -->
         <div id="deleteConfirm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
@@ -206,115 +206,54 @@
                 <!-- Function appends matchups -->
               </select>
 
-              <input id="scoreOne" class="input-mini" type="text" placeholder="Team 1">
-              <input id="scoreTwo" class="input-mini" type="text" placeholder="Team 2">
+              <input id="scoreOne" class="input-mini score_inputs" type="text" placeholder="Team 1">
+              <input id="scoreTwo" class="input-mini score_inputs" type="text" placeholder="Team 2">
             </form>
 
           </div>
           <div class="modal-footer">
-            <button id="updateBtn" class="btn btn-success" onclick="updateScores()">Update Scores</button>
+            <button id="updateBtn" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addScores()">Update Scores</button>
           </div>
-        </div>
+        </div><!-- End Update Scores Modal -->
+
+        <!-- DELETE SCORES CONFIRMATION MODAL
+        ================================ -->
+        <div id="deleteScoresConfirm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Oops...</h3>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete the results for these teams?</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button id="deleteScore" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Delete</button>
+          </div>
+        </div><!-- End Delete Scores Modal -->
 
       </div><!-- /.hero-unit -->
 
-        <h2 class="text-center">Schedule/Results</h2>
-        <br>
+      <h2 class="text-center">Schedule/Results</h2>
+      <br>
 
-        <div class="row">
-          <div id="schedule"></div>
-          <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 1</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week1">
-                         
-              </tbody>
-            </table>
-
-            <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 2</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week2">
-                           
-              </tbody>
-            </table>
+      <div class="row">
+        <div id="schedule">
+          <!-- Tables displayed by createSchedule() function -->
         </div>
-        <br>
+      </div> <!-- /.row -->
 
-        <div class="row">
-          <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 3</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week3">
-                          
-              </tbody>
-            </table>
+      <div class="row">
+        <table id="test" class="table table-bordered"><thead><tr><th> Week 1<th>Teams</th><th>Final Scores</th><th></th></tr></thead><tbody>
 
-            <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 4</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week4">
-                          
-              </tbody>
-            </table>
+          </tbody>
+        </table>
+      </div>
 
-             <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 5</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week5">
-                          
-              </tbody>
-            </table>
-
-             <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 6</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week6">
-                          
-              </tbody>
-            </table>
-
-             <table class="table table-bordered span6">
-              <thead>
-                <tr>
-                  <th>Week 7</th>
-                  <th>Final Scores</th>
-                </tr>
-              </thead>
-              <tbody id="Week7">
-                          
-              </tbody>
-            </table>
-        </div>     
-        
       <hr>
 
       <footer>
-        <p>&copy; The Dream Team 2013</p>
+        <p>&copy; The Beer Leagues 2013</p>
       </footer>
 
     </div> <!-- /container -->
