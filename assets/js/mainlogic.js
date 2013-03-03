@@ -112,7 +112,7 @@
 
         function clearForm() {
           $(".team_inputs", ".score_inputs").each(function () {
-            $(this).val("");
+            $(this).val(""); x
           });
         };
 
@@ -220,8 +220,8 @@
                 //console.log(schedule);
 
                 // Iterate the Weeks
-                for (var i = 0; i < schedule.length; i++) {  //gives us # of weeks
-
+                for (var i = 0; i < schedule.length; i++) {  
+                
                   $('#schedule').append('<table class="table table-bordered span6"><thead><tr><th> Week ' + (i + 1) + '<th>Final Scores</th></tr></thead><tbody id="weekOneMatches"></tbody></table>')
                   
                   // Iterate over the teams
@@ -233,21 +233,24 @@
                         $('#weekOneMatches').append("<tr><td>" + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "</td><td id='scores'></td></tr>"); // Response is the data returned from json, so in this case response[].name is the team name
 
                         $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>');                    
-                    }
-                  } 
-                  else {  
+                    } // End for()
+                  }
+                  else {  //if odd number of teams 
                     for (var j = 0; j < schedule[i].length; j++) {
-                      console.log( response[ schedule[i][j][0] - 1 ].name  );
-                      console.log( response[ schedule[i][j][1] - 2 ].name  );
-                      //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 2 ].name );
-                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
-                    }
-                  } // End else{}
-                }; // End for()
+                      if ( schedule[i][j][1] === schedule.length+1) {
+                         $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " BYE" + "<br>");
+                         } else {
+                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>");
+                        $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                        }; 
+
+                    }; //end for statement
+                  } //end else statement for odd number of team
+                }; //end of original for statement
+
               }  //end success
-          }); //end ajax
-        }; //end createSchedule
+            }); //end ajax
+          }; //end createSchedule
 
         var scoresAll = [];
 
