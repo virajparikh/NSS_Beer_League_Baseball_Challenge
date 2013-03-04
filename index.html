@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -202,8 +203,9 @@
           <div class="modal-body">
 
             <form>              
-             <p id="teamOne"></p>
-             <p id="teamTwo"></p>
+              <select id="teamVS">
+                <!-- Function appends matchups -->
+              </select>
 
               <input id="scoreOne" class="input-mini score_inputs" type="text" placeholder="Team 1">
               <input id="scoreTwo" class="input-mini score_inputs" type="text" placeholder="Team 2">
@@ -243,13 +245,10 @@
       </div> <!-- /.row -->
 
       <div class="row">
-        <div id="weeksTables">
-          <table id="test" class="table table-bordered"><thead><tr><th> Week 1<th>Final Scores</th><th>Update</th><th></th></tr></thead>
-            <tbody id=''>
+        <table id="testTable" class="table table-bordered"><thead><tr><th>Match ID<th>Teams</th><th>Team IDs</th><th>Final Scores</th><th></th></tr></thead><tbody>
 
-            </tbody>
-          </table>
-        </div>
+          </tbody>
+        </table>
       </div>
 
       <hr>
