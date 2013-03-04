@@ -242,16 +242,24 @@
                          } else {
                         $('#schedule').append("<tr><td><span id='" + data[ schedule[i][j][0] - 1 ].id + "'>" + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + "</span></td><td id='scores'></td></tr>");
 
-                        // for (a = 0; a < schedule[i].length; a++) {
-                        //     optionID = a;
-                        // };
-
-                        $('#teamVS').append('<option id="" data-teams=""><span id=' + data[ schedule[i][j][0] - 1 ].id + '>' + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + '</option>' )
+                        $('#teamVS').append('<option id="selectedMatch" data-scoreone=' + [data[ schedule[i][j][0] - 1 ].id +' data-scoretwo=' + data[ schedule[i][j][1] - 1 ].id] + '><span id=' + data[ schedule[i][j][0] - 1 ].id + '>' + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + '</option>' )
                         };
 
                     }; //end for statement
+
                   } //end else statement for odd number of team
                 }; //end of original for statement
+
+                $('#teamVS').change(function() {
+                  var dataTeamID1 = $("option:selected").attr("data-scoreone");
+                  $('#scoreOne').attr('data-teamone_score', dataTeamID1);
+                  console.log($('#scoreOne').data('teamone_score'));
+
+                  var dataTeamID2 = $("option:selected").attr("data-scoretwo");
+                  $('#scoreTwo').attr('data-teamtwo_score', dataTeamID2);
+
+                });
+
               }  //end success
           }); //end ajax
         }; //end createSchedule

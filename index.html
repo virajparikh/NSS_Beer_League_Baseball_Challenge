@@ -42,7 +42,7 @@
 
             <ul class="pull-right">
               <a id="addTeamBtn" href="#teamModal" role="button" class="btn btn-danger" data-toggle="modal">Add Team</a>
-              <a href="#resultsModal" role="button" class="btn" data-toggle="modal">Post Scores</a>
+              <a href="#resultsModal" role="button" class="btn" data-toggle="modal" onclick="passIDs()">Post Scores</a>
             </ul>
 
           </div><!--/.nav-collapse -->
@@ -204,6 +204,7 @@
 
             <form>              
               <select id="teamVS">
+                <option>Choose Matchup:</option>
                 <!-- Function appends matchups -->
               </select>
 
@@ -213,7 +214,7 @@
 
           </div>
           <div class="modal-footer">
-            <button id="updateBtn" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addScores()">Update Scores</button>
+            <button id="updateBtn" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addScores()">Add Scores</button>
           </div>
         </div><!-- End Update Scores Modal -->
 
