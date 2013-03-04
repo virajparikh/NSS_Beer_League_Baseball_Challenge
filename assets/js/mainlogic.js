@@ -109,10 +109,10 @@
             }        
 
         function clearForm() {
-          $(".team_inputs", ".score_inputs").each(function () {
-            $(this).val(""); x
-            });
-          };
+          $(".team_inputs", "#scoreOne", "#scoreTwo").each(function () {
+            $(this).val("");
+          });
+        };
 
         // Edit team info
         // function editTeam(id) {
@@ -205,7 +205,9 @@
               url: '/backliftapp/team',
               type: "GET",
               dataType: "json",
+
               success: function(data) {  //the data we get back from the json file
+
                 var n = data.length,
                     schedule ;
                 if( n == 4 ){
@@ -227,28 +229,36 @@
                     for (var j = 0; j < schedule[i].length; j++) {
                       // console.log( data[ schedule[i][j][0] - 1 ].name  );  
                       // console.log( data[ schedule[i][j][1] - 1 ].name  );
-                       
-                        $('#schedule').append("<tr><td>" + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + "</td>" + "<td>" + data[ schedule[i][j][0] - 1 ].id + " vs " + data[ schedule[i][j][1] - 1 ].id + "</td> + <td id='scores'></td></tr>"); // data returned from json, so in this case data[].name is the team name
+                      //$('#schedule').append(  data[ schedule[i][j][k] - 1].name );  
+                        $('#schedule').append("<tr><td>" + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + "</td><td id='scores'></td></tr>"); // data is the data returned from json, so in this case data[].name is the team name
 
                         $('#teamVS').append('<option>' + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + '</option>');                    
-                      } // End for()
-                    }
-                  else {  //if odd number of teams - ghost team is the highest numbered team (either 6 or 8), whoever plays them has a BYE
+                    } // End for()
+                  }
+                  else {  //if odd number of teams 
                     for (var j = 0; j < schedule[i].length; j++) {
                       if ( schedule[i][j][1] === schedule.length+1) {
-                         $('#schedule').append("<tr><td>" + data[ schedule[i][j][0] - 1 ].name + " BYE" + "</td><td id='scores'></td></tr>");
+                         $('#schedule').append(data[ schedule[i][j][0] - 1 ].name + " BYE" + "<br>");
                          } else {
-                        $('#schedule').append("<tr><td>" + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + "</td>" + "<td>" + data[ schedule[i][j][0] - 1 ].id + " vs " + data[ schedule[i][j][1] - 1 ].id + "</td> + <td id='scores'></td></tr>");
-                        $('#teamVS').append('<option id="teamMatch">' + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + '</option>' );
-                        }; 
+                        $('#schedule').append("<tr><td><span id='" + data[ schedule[i][j][0] - 1 ].id + "'>" + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + "</span></td><td id='scores'></td></tr>");
 
-                        }; //end for statement
-                      } //end else statement for odd number of team
-                    }; //end of original for statement
+                          $('#teamVS').append('<option id=' + optionID + ' data-teams=''><span id=' + data[ schedule[i][j][0] - 1 ].id + '>' + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + '</option>' )
+                          };
 
-                  }  //end success
-                }); //end ajax
-              }; //end createSchedule
+                    }; //end for statement
+                  } //end else statement for odd number of team
+                }; //end of original for statement
+              }  //end success
+          }); //end ajax
+        }; //end createSchedule
+
+        var scoresAll = [];
+
+        var matches = {
+          teams: $("#teamVS").val(),
+          teamOneScore: $("#scoreOne").val(),
+          teamTwoScore: $("#scoreTwo").val(),
+        };
 
       function addScores() {
         var matches = {
@@ -270,8 +280,8 @@
         }; // End updateScores()
 
       function addScoresToTable(matches) {
-        $('#test tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
-        
+        $('#testTable tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td></td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
+      }
 
       //   if (matches.teamOneScore > matches.teamTwoScore) {
       //     wins = wins + 1 && losses = losses + 1;
