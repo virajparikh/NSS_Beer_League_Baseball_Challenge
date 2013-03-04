@@ -207,8 +207,8 @@
               url: '/backliftapp/team',
               type: "GET",
               dataType: "json",
-              success: function(response) {  //response is the old "data" - the data we get back from the json file
-                var n = response.length,
+              success: function(data) {  //data is the old "data" - the data we get back from the json file
+                var n = data.length,
                     schedule ;
                 if( n == 4 ){
                   schedule = sched4;
@@ -222,26 +222,31 @@
                 // Iterate the Weeks
                 for (var i = 0; i < schedule.length; i++) {  
                 
-                  $('#schedule').append('<table class="table table-bordered span6"><thead><tr><th> Week ' + (i + 1) + '<th>Final Scores</th></tr></thead><tbody id="weekOneMatches"></tbody></table>')
+                  $('#schedule').append('<table class="table table-bordered span6"><thead><tr><th> Week ' + (i + 1) + '<th>Final Scores</th><th>Update</th><th></th></tr></thead><tbody id="matchUps"></tbody></table>')
                   
                   // Iterate over the teams
-                  if (n % 2 == 0) {  
+                  if (n % 2 == 0) {  //if even number of teams
                     for (var j = 0; j < schedule[i].length; j++) {
-                      // console.log( response[ schedule[i][j][0] - 1 ].name  );  
-                      // console.log( response[ schedule[i][j][1] - 1 ].name  );
-                      //$('#schedule').append(  response[ schedule[i][j][k] - 1].name );  
-                        $('#weekOneMatches').append("<tr><td>" + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "</td><td id='scores'></td></tr>"); // Response is the data returned from json, so in this case response[].name is the team name
+                      // console.log( data[ schedule[i][j][0] - 1 ].name  );  
+                      // console.log( data[ schedule[i][j][1] - 1 ].name  );
+                      //$('#schedule').append(  data[ schedule[i][j][k] - 1].name );  
+                        $('#matchUps').append('<tr><td>' + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + '</td><td id="matchScores">0 - 0</td><td><a class="btn btn-small btn-info" href="#resultsModal" data-toggle="modal" onclick="deleteScores(' + matches.id + ')">Post Scores</a></td><td><a class="btn btn-mini" href="#deleteScoresConfirm" data-toggle="modal" onclick="deleteScores(' + matches.id + ')"><i class="icon-remove"></i></a></td></tr>'); // data is the data returned from json, so in this case data[].name is the team name
 
-                        $('#teamVS').append('<option>' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>');                    
+                        $('#teamOne').append(data[ schedule[i][j][0] - 1 ].name);
+
+                        $('#teamTwo').append(data[ schedule[i][j][1] - 1 ].name);
                     } // End for()
                   }
                   else {  //if odd number of teams 
                     for (var j = 0; j < schedule[i].length; j++) {
                       if ( schedule[i][j][1] === schedule.length+1) {
-                         $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " BYE" + "<br>");
+                         $('#matchUps').append('<tr><td>' + data[ schedule[i][j][0] - 1 ].name + " BYE" + '</td><td id="matchScores"></td><td></td><td><a class="btn btn-mini" href="#deleteScoresConfirm" data-toggle="modal" onclick="deleteScores(' + matches.id + ')"><i class="icon-remove"></i></a></td></tr>');
                          } else {
-                        $('#schedule').append(response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + "<br>");
-                        $('#teamVS').append('<option id="teamMatch">' + response[ schedule[i][j][0] - 1 ].name + " vs " + response[ schedule[i][j][1] - 1 ].name + '</option>' );
+                        $('#matchUps').append('<tr><td>' + data[ schedule[i][j][0] - 1 ].name + " vs " + data[ schedule[i][j][1] - 1 ].name + '</td><td id="matchScores">0 - 0</td><td><a class="btn btn-small btn-info" href="#resultsModal" data-toggle="modal" onclick="deleteScores(' + matches.id + ')">Post Scores</a></td><td><a class="btn btn-mini" href="#deleteScoresConfirm" data-toggle="modal" onclick="deleteScores(' + matches.id + ')"><i class="icon-remove"></i></a></td></tr>');
+                        
+                        $('#teamOne').append(data[ schedule[i][j][0] - 1 ].name);
+
+                        $('#teamTwo').append(data[ schedule[i][j][1] - 1 ].name);
                         }; 
 
                     }; //end for statement
@@ -280,7 +285,7 @@
       }; // End updateScores()
 
       function addScoresToTable(matches) {
-        $('#test tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
+        $('#test tbody').append("");
       }
 
       function deleteScores(id) {
