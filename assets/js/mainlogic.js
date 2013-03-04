@@ -242,8 +242,12 @@
                          } else {
                         $('#schedule').append("<tr><td><span id='" + data[ schedule[i][j][0] - 1 ].id + "'>" + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + "</span></td><td id='scores'></td></tr>");
 
-                          $('#teamVS').append('<option id=' + optionID + ' data-teams=''><span id=' + data[ schedule[i][j][0] - 1 ].id + '>' + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + '</option>' )
-                          };
+                        // for (a = 0; a < schedule[i].length; a++) {
+                        //     optionID = a;
+                        // };
+
+                        $('#teamVS').append('<option id="" data-teams=""><span id=' + data[ schedule[i][j][0] - 1 ].id + '>' + data[ schedule[i][j][0] - 1 ].name + "</span> vs <span id='" + data[ schedule[i][j][1] - 1 ].id + "'>" + data[ schedule[i][j][1] - 1 ].name + '</option>' )
+                        };
 
                     }; //end for statement
                   } //end else statement for odd number of team
@@ -289,108 +293,16 @@
 
       //   }
       // }
-
      
+      function deleteScores(id) {
+        $('#deleteScore').click(function() {
+          $.ajax({
+            url: "backliftapp/scores/" + id,
+            type: "DELETE",
+            dataType: "json",
+            success: function () {
+              $('#' + id).remove();
+            }
+          }); // End .ajax()
+        }); // End .click()
       }; // End deleteScores()
-
-    //   function updateRecord(homeTeam, awayTeam, teamOneScore, teamTwoScore) {
-
-    //   // determine winner and loser
-    //   if (+teamOneScore > +teamTwoScore) {
-
-    //     // increment home team wins
-    //     $.ajax({
-    //       url: "/backliftapp/team/" + homeTeam.id,
-    //       type: "PUT",
-    //       dataType: "JSON",
-    //       data: {
-    //         wins: +homeTeam.wins + 1,
-    //         percentage: (+homeTeam.wins + 1) / (+homeTeam.wins + 1 + +homeTeam.losses)
-    //       },
-    //       success: function (data) {
-
-    //       // increment away team losses
-    //       $.ajax({
-    //         url: "/backliftapp/team/" + awayTeam.id,
-    //         type: "PUT",
-    //         dataType: "JSON",
-    //         data: {
-    //           losses: +awayTeam.losses + 1,
-    //           percentage: (+awayTeam.wins) / (+awayTeam.wins + +awayTeam.losses + 1)
-    //         },
-    //         success: function (data) {
-
-    //         // retrieve league data from server
-    //         $.ajax({
-    //           url: "/backliftapp/team",
-    //           type: "GET",
-    //           dataType: "JSON",
-    //           success: function (data) {
-
-    //             // fill league array with data
-    //             league = data;
-
-    //             // populate standings table
-    //             updateStandings();
-
-    //           }
-    //         }); // end GET
-
-    //         }
-    //       }); // end PUT
-
-    //       }
-    //     }); // end PUT
-
-    //   } else {
-
-    //     // increment home team losses
-    //     $.ajax({
-    //       url: "/backliftapp/team/" + homeTeam.id,
-    //       type: "PUT",
-    //       dataType: "JSON",
-    //       data: {
-    //         losses: +homeTeam.losses + 1,
-    //         percentage: (+homeTeam.wins) / (+homeTeam.wins + +homeTeam.losses + 1)
-    //       },
-    //       success: function (data) {
-
-    //       // increment away team wins
-    //       $.ajax({
-    //         url: "/backliftapp/team/" + awayTeam.id,
-    //         type: "PUT",
-    //         dataType: "JSON",
-    //         data: {
-    //           wins: +awayTeam.wins + 1,
-    //           percentage: (+awayTeam.wins + 1) / (+awayTeam.wins + 1 + +awayTeam.losses)
-    //         },
-    //         success: function (data) {
-
-    //         // retrieve league data from server
-    //         $.ajax({
-    //           url: "/backliftapp/team",
-    //           type: "GET",
-    //           dataType: "JSON",
-    //           success: function (data) {
-
-    //             // fill league array with data
-    //             league = data;
-
-    //             // populate standings table
-    //             updateStandings();
-
-    //           }
-    //         }); // end GET
-
-    //         }
-    //       }); // end PUT
-
-    //       }
-    //     }); // end PUT
-
-    //   }; // end if statement
-
-    //   // clear score form inputs
-    //   $("#scoreForm input").val("");
-
-    // }; // end updateRecord
