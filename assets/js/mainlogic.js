@@ -48,8 +48,6 @@
 
     // Add a team to The Beer League
     function addTeam() {
-      var x = 0
-      var y = 0
       var team = {
         name: $("#teamName").val(),
         mgrFirst: $("#firstName").val(),
@@ -58,8 +56,8 @@
         //mgrEmail: $("#email").val(),
         mgrZip: $("#zipCode").val(),
         sponsor: $("#sponsor").val(),
-        wins: x,
-        losses: y
+        wins: 0,
+        losses: 0
       };
 
       $.ajax({
@@ -76,15 +74,22 @@
           }
         });
       }; // end add team
+		function winningPercentage(team) {
+			if (Number(team.wins) + Number(team.losses) != 0) {
+				return((Number(team.wins)/(Number(team.wins) + Number(team.losses))).toFixed(3));
+			} else {
+				"0.000"
+			}
+		};
 
     function addTeamToTable(team) {    
-      $("<tr id='" + team.id + "'>" +
+      $("<tr class='standings' id='" + team.id + "'>" +
         "<td>" + "<span id='teamPop' data-original-title='" + team.name + " Team Info' data-content='Mgr. Name: " + team.mgrFirst + " " + team.mgrLast + ", Phone: " + team.mgrPhone + ", Sponsor: " + team.sponsor + "'>" + team.name + "</span>" +
         "</td>" +
         "<td><span id='mgrTip' data-placement='left' data-original-title='" + team.mgrPhone + "'>" + team.mgrFirst + " " + team.mgrLast + "</span></td>" +
-        "<td>" + team.wins + "</td>" +
-        "<td>" + team.losses + "</td>" +
-        "<td>" + ".000" + "</td>" +
+        "<td id='tableWins'>" + team.wins + "</td>" +
+        "<td id='tableLosses'>" + team.losses + "</td>" +
+        "<td id='winning-pct'>" + winningPercentage(team) + "</td>" +
         "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Manage <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
           "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
           "<li class='divider'>" + "</li>" +
@@ -232,16 +237,16 @@
               }; //end for statement
 
             } //end else statement for odd number of team
-          }; //end of original for statement
+  }; //end of original for statement
          
           //assigning a data attribute to each matchup and each team's score
           $('#teamVS').change(function() {
-            var dataTeamID1 = $("option:selected").attr("data-teamone_id");
-            $('#scoreOne').attr('data-teamone_score_id', dataTeamID1);
+            teamID1 = $("option:selected").attr("data-teamone_id");
+            $('#scoreOne').attr('data-teamone_score_id', teamID1);
             //console.log($('#teamone').data('teamone_score_id'));
 
-            var dataTeamID2 = $("option:selected").attr("data-teamtwo_id");
-            $('#scoreTwo').attr('data-teamtwo_score_id', dataTeamID2);
+            teamID2 = $("option:selected").attr("data-teamtwo_id");
+            $('#scoreTwo').attr('data-teamtwo_score_id', teamID2);
             //console.log($('#teamtwo').data('teamtwo_score_id'));
           }); //end change function
 
@@ -249,11 +254,59 @@
       }); //end ajax
     }; //end createSchedule
 
-    function addScores() {
+			function updateWinsAndLosses(id, wins, losses) {
+				$.ajax({
+				url : '/backliftapp/team/' + id,
+				type : "PUT",
+				dataType : "json",
+				data : { 
+					wins : wins,
+					losses : losses
+					}
+				});
+			};
+
+		  function updatePercentages() {
+				$.each($('tr.standings'), function() {
+			  	wins = Number($(this).find('#tableWins').text())
+					losses = Number($(this).find('#tableLosses').text())
+					if (wins + losses != 0) {
+				  	percentage = wins / (wins + losses)
+						$(this).find('#winning-pct').text(Number(percentage).toFixed(3));	
+					} else {
+						$(this).find('#winning-pct').text(".000");
+					};
+				});
+			};
+
+    $('#updateBtn').click(function() {
+			scoreOne = $('#scoreOne')
+      scoreTwo = $('#scoreTwo')
+			teamOneID = $("#scoreOne").data('teamone_score_id')
+			teamTwoID = $("#scoreTwo").data('teamtwo_score_id')
+      teamOneCurrentWins = $('tr.standings#' + teamOneID).find('#tableWins')
+      teamTwoCurrentWins = $('tr.standings#' + teamTwoID).find('#tableWins')
+      teamOneCurrentLosses = $('tr.standings#' + teamOneID).find('#tableLosses')
+      teamTwoCurrentLosses = $('tr.standings#' + teamTwoID).find('#tableLosses')
+
+      if (scoreOne > scoreTwo) {
+        teamTwoCurrentWins.text(Number(teamTwoCurrentWins.text()) + 1);
+			  teamOneCurrentLosses.text(Number(teamOneCurrentLosses.text()) + 1);
+      } else {
+			  teamOneCurrentWins.text(Number(teamOneCurrentWins.text()) + 1);
+        teamTwoCurrentLosses.text(Number(teamTwoCurrentLosses.text()) + 1);
+			}
+	
+			updatePercentages();
+			updateWinsAndLosses(teamOneID, teamOneCurrentWins.text(), teamOneCurrentLosses.text()); 
+			updateWinsAndLosses(teamTwoID, teamTwoCurrentWins.text(), teamTwoCurrentLosses.text()); 
+
       var matches = {
         teams: $("#teamVS").val(),
+        teamOneID: $("#scoreOne").data('teamone_score_id'),
+        teamTwoID: $("#scoreTwo").data('teamtwo_score_id'),
         teamOneScore: $("#scoreOne").val(),
-        teamTwoScore: $("#scoreTwo").val(),
+        teamTwoScore: $("#scoreTwo").val()
       };
 
       $.ajax({
@@ -262,16 +315,81 @@
         dataType: "json",
         data: matches,
         success: function (data) {
-          addScoresToTable(data);  
-          updateStandings;               
+          addScoresToTable(data); 
           clearForm();
             }
-        }); // End .ajax()
-      }; // End updateScores()
+      }); // End .ajax()
+		});
 
     function addScoresToTable(matches) {
       $('#testTable tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
     }
+
+    // Get info from team.json
+    function updateStandings(data) {
+      $.ajax({
+        url: "backliftapp/team",
+        type: "GET",
+        dataType: "json",
+        data: data,
+        success: function (data) {
+          compareScores(data);
+          $.each(data, function() { 
+            updateWinsLosses(this) 
+          });
+        } // End success
+      }); // End .ajax()
+    };
+
+    // Calculating wins vs losses
+    function compareScores(matches) {
+
+      var team = {
+        name: $("#teamName").val(),
+        mgrFirst: $("#firstName").val(),
+        mgrLast: $("#lastName").val(),
+        mgrPhone: $("#phoneNum").val(),
+        mgrZip: $("#zipCode").val(),
+        sponsor: $("#sponsor").val(), 
+        wins: 0,
+        losses: 0
+      };
+      
+
+    };
+
+    // Update wins/losses in team.json
+    function updateWinsLosses(team) {
+      $.ajax({
+        url: '/backliftapp/team/' + team.id,
+        type: "PUT",
+        dataType: "json",
+        data: team,
+        success: function (data) {          
+          getNewTeamRecord(data);
+        } // End success
+      }); // End .ajax()
+    };
+
+    // Get new win/loss record for each team from team.json
+    function getNewTeamRecord(teams) {
+      $.ajax({
+        url: "backliftapp/team",
+        type: "GET",
+        dataType: "json",
+        data: teams,
+        success: function (data) {
+          $.each(data, function() {
+            $('tr.standings#' + this.id).find('#tableWins').text(this.wins);
+            $('tr.standings#' + this.id).find('#tableLosses').text(this.losses);
+          });
+          
+        } // End success
+      }); // End .ajax()
+    };
+
+    // Season calculation ============================================ /
+
 
     function deleteScores(id) {
       $('#deleteScore').click(function() {
@@ -285,18 +403,3 @@
         }); // End .ajax()
       }); // End .click()
     }; // End deleteScores()
-
-    function updateStandings(id) {
-      if (dataTeamID1.scoreOne > dataTeamID2.scoreTwo) {
-        dataTeamID1.wins = dataTeamID1.wins + 1 && dataTeamID2.losses = dataTeamID2.losses + 1;
-      } else {
-        dataTeamID1.losses = dataTeamID1.losses + 1 && dataTeamID2.wins = dataTeamID2.wins + 1;
-      }
-    };
-
-
-    // var matches = {
-    //     teams: $("#teamVS").val(),
-    //     teamOneScore: $("#scoreOne").val(),
-    //     teamTwoScore: $("#scoreTwo").val(),
-    //   };
