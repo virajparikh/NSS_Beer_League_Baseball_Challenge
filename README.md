@@ -7,7 +7,7 @@ Successfully completed:
 1. Using Bootstrap to format the app
 2. Having a minimum of 4 teams and maximum of 8 teams - alert messages pop up.
     - this feature does have some bugs in it.  50% confidence in this...it seems to only work on refresh.
-3. Add teams - can successfully capture team info in a pop-up modal.
+3. Add teams - can successfully capture team info in a pop-up modal and display on Standings table.
 4. Save team to backlift server using Ajax.
 5. Hover (& click) in standings that displays team info. 
 
@@ -18,12 +18,13 @@ Successfully completed:
 2. Created a second modal that has a dropdown of all team matchups, and input boxes to enter a game score. 
 3. Team records update, BUT with only 50% success. 
   
-Big problem area that we realized the morning of assignment submission: 
-1. The standings are only updating successfully if team 1 wins.   
+Big problem areas that we realized the morning of assignment submission: 
+1. The biggest problem is that the team records are only updating successfully if team 1 wins.   
     a. Problem arises if Team 2 wins the game.  Clearly this needs to be fixed.
-    b. There seems to be some kind of caching problem also, connected to the dropdown matchup list.  Ideally we would have prevented scores from being entered twice on the same game, but ran out of time.
+    b. There also seems to be some kind of caching problem also, connected to the dropdown matchup list.  Ideally we would have prevented scores from being entered twice on the same game, but ran out of time.
 2. Min/Max team alerts are not working consistently...refresh issue.
-3. We had no time to test this app; no doubt other bugs are embedded in the code.
+3. When adding a team, the winning % is not displaying 0.000 until it is refreshed.  
+4. We had no time to test this app; no doubt other bugs are embedded in the code.
     
 
 Started but NOT completed:
