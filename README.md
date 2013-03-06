@@ -18,11 +18,12 @@ Successfully completed:
 2. created a second modal that has a dropdown of all team matchups, and input boxes to enter a game score 
 3. team records udpate - however, there is a bug here:
   
-Big problem area: 
+Big problem area that we realized the morning of assignment submission: 
 1. The standings are NOT updating successfully 100% of the time.  
-  a. Problem is if Team   
-  c. We just realized this problem on the morning of assignment submission.
-
+    a. Problem arises if Team 2 wins the game.  Clearly this needs to be fixed.
+    b. There seems to be some kind of caching problem also, connected to the dropdown matchup list.  Ideally we would have prevented scores from being entered twice on the same game, but ran out of time.
+2. We had no time to test this app; no doubt other problems are embedded in the code
+    
 
 Started but NOT completed:
 1. Sort standings by winning percentage using bubble sort
