@@ -26,3 +26,7 @@ thead {
 .manage {
     cursor: pointer;
 }
+
+td a {
+	cursor: pointer;
+}

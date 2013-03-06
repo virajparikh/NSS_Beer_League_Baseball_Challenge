@@ -53,7 +53,6 @@
         mgrFirst: $("#firstName").val(),
         mgrLast: $("#lastName").val(),
         mgrPhone: $("#phoneNum").val(),
-        //mgrEmail: $("#email").val(),
         mgrZip: $("#zipCode").val(),
         sponsor: $("#sponsor").val(),
         wins: 0,
@@ -82,9 +81,10 @@
 			}
 		};
 
-    function addTeamToTable(team) {    
+    function addTeamToTable(team) {
+
       $("<tr class='standings' id='" + team.id + "'>" +
-        "<td>" + "<span id='teamPop' data-original-title='" + team.name + " Team Info' data-content='Mgr. Name: " + team.mgrFirst + " " + team.mgrLast + ", Phone: " + team.mgrPhone + ", Sponsor: " + team.sponsor + "'>" + team.name + "</span>" +
+        "<td>" + "<a id='teamPop' data-original-title='" + team.name + " Team Info' data-content='Mgr. Name: " + team.mgrFirst + " " + team.mgrLast + ", Phone: " + team.mgrPhone + ", Sponsor: " + team.sponsor + "'>" + team.name + "</a>" +
         "</td>" +
         "<td><span id='mgrTip' data-placement='left' data-original-title='" + team.mgrPhone + "'>" + team.mgrFirst + " " + team.mgrLast + "</span></td>" +
         "<td id='tableWins'>" + team.wins + "</td>" +
@@ -96,7 +96,7 @@
           "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTeam(\"" + team.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
         "</ul>" + "</div>" + "</td>" +
         "</tr>").appendTo('#standings tbody');
-        }        
+        }  
 
     function clearForm() {
       $(".team_inputs", "#scoreOne", "#scoreTwo").each(function () {
@@ -315,14 +315,36 @@
         dataType: "json",
         data: matches,
         success: function (data) {
-          addScoresToTable(data); 
+          addScoresToTable(data);
+
+    // Bubble Sort Algo. ========================================================= /
+          // Array.prototype.bubblesort = function() {
+          //   var done = false;
+          //   while (! done) {
+          //     done = true;
+          //     for (var i = 1; i < this.length; i++) {
+          //       if (this[i - 1] > this[i]) {
+          //         done = false;
+          //         var tmp = this[i - 1];
+          //         this[i - 1] = this[i];
+          //         this[i] = tmp;
+          //       }
+          //     }
+          //   }
+          //   return this;
+          // }
+
+          // var rank = matches;
+          // rank.bubblesort();
+          // alert(rank);
+
           clearForm();
             }
       }); // End .ajax()
-		});
+		}); // End .click()
 
     function addScoresToTable(matches) {
-      $('#testTable tbody').append("<tr id='" + matches.id + "'><td>" + matches.id + "</td><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
+      $('#testTable tbody').append("<tr id='" + matches.id + "'><td>" + matches.teams + "</td><td>" + matches.teamOneScore + " - " + matches.teamTwoScore + "</td><td><a class='btn btn-mini' href='#deleteScoresConfirm' data-toggle='modal' onclick='deleteScores(\"" + matches.id + "\")'><i class='icon-remove'></i></a></td></tr>");
     }
 
     // Get info from team.json

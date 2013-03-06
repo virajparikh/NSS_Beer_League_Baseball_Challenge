@@ -54,7 +54,7 @@
 
       <div id="alert"></div>
 
-      <div class="alert alert-success alert-text">Scores successfully updated! <a class="close" data-dismiss="alert" href="#">&times;</a></div>
+      <!-- <div class="alert alert-success alert-text">Scores successfully updated! <a class="close" data-dismiss="alert" href="#">&times;</a></div> -->
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">        
@@ -95,17 +95,17 @@
               <div class="control-group">
                 <label class="control-label" for="teamName">Team:</label>
                 <div class="controls">
-                  <input type="text" id="teamName" class="team_inputs" name="teamName" placeholder="Team Name">
+                  <input type="text" id="teamName" class="team_inputs" name="teamName" placeholder="Team Name" required>
                 </div>
               </div>
 
               <div class="control-group">
                 <label class="control-label" for="manager">Manager:</label>
                 <div class="controls">
-                  <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="First Name">
-                  <input type="text" id="lastName" class="team_inputs" name="lastName" placeholder="Last Name">
-                  <input type="text" id="phoneNum" class="team_inputs" name="phoneNum" placeholder="Phone">
-                  <input type="text" id="zipCode" class="team_inputs" name="zipCode" placeholder="Zip Code">
+                  <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="First Name" required>
+                  <input type="text" id="lastName" class="team_inputs" name="lastName" placeholder="Last Name" required>
+                  <input type="text" id="phoneNum" class="team_inputs" name="phoneNum" placeholder="Phone" required>
+                  <input type="text" id="zipCode" class="team_inputs" name="zipCode" placeholder="Zip Code" required>
                 </div>
               </div>
 
@@ -141,7 +141,7 @@
               <div class="control-group">
                 <label class="control-label" for="teamName">Team:</label>
                 <div class="controls">
-                  <input type="text" id="teamName" class="team_inputs" name="teamName" value="+ team.name + " placeholder="Team Name">
+                  <input type="text" id="teamName" class="team_inputs" name="teamName" placeholder="Team Name">
 
                 </div>
               </div>
@@ -208,8 +208,8 @@
                 <!-- Function appends matchups -->
               </select>
 
-              <input id="scoreOne" class="input-mini score_inputs" type="text" placeholder="Team 1">
-              <input id="scoreTwo" class="input-mini score_inputs" type="text" placeholder="Team 2">
+              <input id="scoreOne" class="input-mini score_inputs" type="text" placeholder="Team 1" required>
+              <input id="scoreTwo" class="input-mini score_inputs" type="text" placeholder="Team 2" required>
             </form>
 
           </div>
@@ -246,7 +246,7 @@
       </div> <!-- /.row -->
 
       <div class="row">
-        <table id="testTable" class="table table-bordered"><thead><tr><th>Match ID<th>Teams</th><th>Final Scores</th><th></th></tr></thead><tbody>
+        <table id="testTable" class="table table-bordered"><thead><tr><th>Match</th><th>Final Scores</th><th>Delete</th></tr></thead><tbody>
 
           </tbody>
         </table>
