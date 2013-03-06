@@ -32,6 +32,6 @@ Not started/completed:
 1. Form validation
 
 Other comments:
-1. We successfully implemented a Github workflow process that frequently pushes our individual work and merges it into a "develop" branch
-  - branches used are master, develop, viraj and desmond
+1. We successfully implemented a Github workflow process that frequently pushes our individual work and merges it into a "develop" branch.
+    - Branches used are master, develop, viraj and desmond
 2. Backlift issues - occasionally did not update the database.  This was a very minor issue.
