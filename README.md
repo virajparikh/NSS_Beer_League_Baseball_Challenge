@@ -1,6 +1,9 @@
 NSS_Beer_League_Baseball_Challenge by Viraj Parikh and Desmond Cain
 ==================================
 
+Desmond's Backlift link: https://app-4upc4.backliftapp.com/
+Viraj's Backlift link: https://app-36qw9.backliftapp.com/
+
 Phase 1:
 
 Successfully completed:
