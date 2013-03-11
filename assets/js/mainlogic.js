@@ -44,6 +44,10 @@
         $('#teamName').focus();
     });
 
+    $(function(){
+        $("#standings").stupidtable();
+    });
+
   }); // END DOC .READY() ========================================================= -->
 
     // Add a team to The Beer League
